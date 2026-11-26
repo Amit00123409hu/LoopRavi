@@ -1,0 +1,4604 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Python Loop Control Simulator (Hinglish)</title>
+    <meta
+      name="description"
+      content="Interactive beginner-friendly simulator teaching break, continue, and pass in Python loops using Hinglish explanations."
+    />
+    <meta property="og:title" content="Python Loop Control Simulator (Hinglish)" />
+    <meta
+      property="og:description"
+      content="Interactive beginner-friendly simulator teaching break, continue, and pass in Python loops using Hinglish explanations."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-canvas: #f8fafc;
+        --bg-surface: #ffffff;
+        --bg-subtle: #f1f5f9;
+        --border-hairline: #e2e8f0;
+        --border-strong: #cbd5e1;
+        --text-primary: #0f172a;
+        --text-secondary: #475569;
+        --text-muted: #64748b;
+
+        --accent-primary: #2563eb;
+        --accent-primary-hover: #1d4ed8;
+        --accent-primary-soft: #eff6ff;
+
+        --emerald-bg: #ecfdf5;
+        --emerald-border: #6ee7b7;
+        --emerald-text: #065f46;
+        --emerald-solid: #10b981;
+
+        --amber-bg: #fffbeb;
+        --amber-border: #fcd34d;
+        --amber-text: #92400e;
+        --amber-solid: #f59e0b;
+
+        --red-bg: #fef2f2;
+        --red-border: #fca5a5;
+        --red-text: #991b1b;
+        --red-solid: #ef4444;
+
+        --blue-bg: #eff6ff;
+        --blue-border: #93c5fd;
+        --blue-text: #1e40af;
+
+        --code-bg: #0f172a;
+        --code-line-active: rgba(56, 189, 248, 0.16);
+        --code-line-border: rgba(56, 189, 248, 0.45);
+
+        --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+        --radius-lg: 14px;
+        --radius-md: 10px;
+        --radius-sm: 6px;
+        --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: var(--bg-canvas);
+        color: var(--text-primary);
+        font-family: var(--font-sans);
+        font-size: 15px;
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      button,
+      input,
+      label {
+        font-family: inherit;
+      }
+
+      button:focus-visible,
+      input:focus-visible {
+        outline: 2px solid var(--accent-primary);
+        outline-offset: 2px;
+      }
+
+      /* Top Header */
+      .topbar {
+        background: var(--bg-surface);
+        border-bottom: 1px solid var(--border-hairline);
+      }
+
+      .topbar-inner {
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 14px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        flex-wrap: wrap;
+      }
+
+      .brand-title {
+        margin: 0;
+        font-size: 1.15rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--text-primary);
+        white-space: nowrap;
+      }
+
+      .tab-bar {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px;
+        background: var(--bg-subtle);
+        border: 1px solid var(--border-hairline);
+        border-radius: var(--radius-md);
+      }
+
+      .tab-btn {
+        appearance: none;
+        border: 1px solid transparent;
+        background: transparent;
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        font-weight: 600;
+        padding: 8px 16px;
+        min-height: 40px;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background-color 160ms var(--ease-settle), color 160ms var(--ease-settle),
+          box-shadow 160ms var(--ease-settle);
+      }
+
+      .tab-btn:hover {
+        color: var(--text-primary);
+      }
+
+      .tab-btn.active {
+        background: var(--bg-surface);
+        color: var(--accent-primary);
+        border-color: var(--border-hairline);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+      }
+
+      .topbar-meta {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+
+      .xp-readout {
+        font-size: 0.84rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+
+      .xp-level-sep {
+        color: var(--text-muted);
+        margin: 0 4px;
+      }
+
+      .xp-level-name {
+        color: var(--accent-primary);
+        font-weight: 600;
+      }
+
+      .btn-mini {
+        appearance: none;
+        border: 1px solid var(--border-strong);
+        background: var(--bg-surface);
+        color: var(--text-primary);
+        font-size: 0.78rem;
+        font-weight: 600;
+        padding: 5px 11px;
+        min-height: 32px;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background-color 140ms var(--ease-settle), border-color 140ms var(--ease-settle);
+      }
+
+      .btn-mini:hover {
+        background: var(--bg-subtle);
+      }
+
+      .btn-mini.active {
+        background: var(--accent-primary-soft);
+        border-color: var(--accent-primary);
+        color: var(--blue-text);
+      }
+
+      /* Main Layout */
+      .app-container {
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 20px 24px 36px;
+      }
+
+      .intro-strip {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 18px;
+      }
+
+      .intro-heading {
+        margin: 0;
+        font-size: 1.35rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--text-primary);
+      }
+
+      .intro-sub {
+        margin: 0;
+        font-size: 0.92rem;
+        color: var(--text-secondary);
+      }
+
+      .sandbox-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+        gap: 20px;
+        align-items: start;
+      }
+
+      .panel {
+        background: var(--bg-surface);
+        border: 1px solid var(--border-hairline);
+        border-radius: var(--radius-lg);
+        padding: 20px;
+      }
+
+      .stack-col {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        min-width: 0;
+      }
+
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .section-title {
+        margin: 0;
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--text-primary);
+      }
+
+      .section-meta {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        font-weight: 500;
+      }
+
+      /* Tab 1: Traffic Light Stage */
+      .traffic-controls-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 14px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid var(--border-hairline);
+      }
+
+      .toggle-btn {
+        appearance: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 14px;
+        min-height: 42px;
+        background: var(--bg-subtle);
+        border: 1px solid var(--border-hairline);
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        user-select: none;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        transition: border-color 150ms var(--ease-settle), background-color 150ms var(--ease-settle),
+          color 150ms var(--ease-settle), transform 100ms var(--ease-settle);
+      }
+
+      .toggle-btn:hover:not(:disabled) {
+        border-color: var(--border-strong);
+      }
+
+      .toggle-btn:active:not(:disabled) {
+        transform: scale(0.98);
+      }
+
+      .toggle-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .toggle-switch {
+        position: relative;
+        width: 36px;
+        height: 20px;
+        border-radius: 999px;
+        background: #cbd5e1;
+        flex-shrink: 0;
+        transition: background-color 160ms var(--ease-settle);
+      }
+
+      .toggle-knob {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #ffffff;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.25);
+        transition: transform 160ms var(--ease-settle);
+      }
+
+      .toggle-btn[aria-pressed="true"] .toggle-knob {
+        transform: translateX(16px);
+      }
+
+      .toggle-btn.night-toggle[aria-pressed="true"] {
+        background: var(--accent-primary-soft);
+        border-color: var(--accent-primary);
+        color: var(--blue-text);
+      }
+
+      .toggle-btn.night-toggle[aria-pressed="true"] .toggle-switch {
+        background: var(--accent-primary);
+      }
+
+      .toggle-btn.break-toggle[aria-pressed="true"] {
+        background: var(--red-bg);
+        border-color: var(--red-border);
+        color: var(--red-text);
+      }
+
+      .toggle-btn.break-toggle[aria-pressed="true"] .toggle-switch {
+        background: var(--red-solid);
+      }
+
+      .toggle-btn.quiz-toggle[aria-pressed="true"] {
+        background: var(--amber-bg);
+        border-color: var(--amber-border);
+        color: var(--amber-text);
+      }
+
+      .toggle-btn.quiz-toggle[aria-pressed="true"] .toggle-switch {
+        background: var(--amber-solid);
+      }
+
+      .toggle-btn.for-toggle[aria-pressed="true"] {
+        background: var(--emerald-bg);
+        border-color: var(--emerald-solid);
+        color: var(--emerald-text);
+      }
+
+      .toggle-btn.for-toggle[aria-pressed="true"] .toggle-switch {
+        background: var(--emerald-solid);
+      }
+
+      .toggle-text-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        line-height: 1.2;
+      }
+
+      .toggle-hint {
+        font-weight: 500;
+        color: var(--text-secondary);
+        font-size: 0.74rem;
+      }
+
+      .toggle-btn.ambulance-toggle[aria-pressed="true"] {
+        background: #fef2f2;
+        border-color: #f87171;
+        color: #991b1b;
+      }
+
+      .toggle-btn.ambulance-toggle[aria-pressed="true"] .toggle-switch {
+        background: #ef4444;
+      }
+
+      .toggle-btn.convoy-toggle[aria-pressed="true"] {
+        background: #1e293b;
+        border-color: #475569;
+        color: #f8fafc;
+      }
+
+      .toggle-btn.convoy-toggle[aria-pressed="true"] .toggle-hint {
+        color: #cbd5e1;
+      }
+
+      .toggle-btn.convoy-toggle[aria-pressed="true"] .toggle-switch {
+        background: #f59e0b;
+      }
+
+      .stage-header-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .camera-btn {
+        appearance: none;
+        border: 1px solid var(--accent-primary);
+        background: var(--accent-primary-soft);
+        color: var(--blue-text);
+        font-size: 0.8rem;
+        font-weight: 700;
+        padding: 6px 12px;
+        min-height: 34px;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: background-color 140ms var(--ease-settle), transform 100ms var(--ease-settle);
+      }
+
+      .camera-btn:hover {
+        background: #dbeafe;
+      }
+
+      .camera-btn:active {
+        transform: scale(0.98);
+      }
+
+      .road-stage {
+        position: relative;
+        height: 360px;
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        border: 1px solid var(--border-hairline);
+        background: #dbeafe;
+      }
+
+      .three-mount {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .three-mount canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+        outline: none;
+      }
+
+      .stage-status-tag {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(15, 23, 42, 0.14);
+        padding: 5px 10px;
+        border-radius: var(--radius-sm);
+        pointer-events: none;
+        z-index: 4;
+      }
+
+      .road-stage.night .stage-status-tag {
+        color: #f8fafc;
+        background: rgba(15, 23, 42, 0.9);
+        border-color: rgba(248, 250, 252, 0.2);
+      }
+
+      .signal-label-box {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: rgba(255, 255, 255, 0.94);
+        border: 1px solid rgba(15, 23, 42, 0.14);
+        border-radius: var(--radius-sm);
+        padding: 5px 11px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        white-space: nowrap;
+        pointer-events: none;
+        z-index: 4;
+      }
+
+      .road-stage.night .signal-label-box {
+        background: rgba(15, 23, 42, 0.92);
+        border-color: #334155;
+        color: #f8fafc;
+      }
+
+      .car-state-caption {
+        position: absolute;
+        bottom: 10px;
+        left: 12px;
+        max-width: calc(100% - 170px);
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: #f8fafc;
+        background: rgba(15, 23, 42, 0.84);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        padding: 5px 10px;
+        border-radius: var(--radius-sm);
+        pointer-events: none;
+        z-index: 4;
+      }
+
+      .orbit-hint {
+        position: absolute;
+        bottom: 10px;
+        right: 12px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: #e2e8f0;
+        background: rgba(15, 23, 42, 0.78);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        padding: 4px 8px;
+        border-radius: var(--radius-sm);
+        pointer-events: none;
+        z-index: 4;
+      }
+
+      /* Tab 2: Number Demo Stage */
+      .mode-selector {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        margin-bottom: 18px;
+      }
+
+      .radio-card {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        min-height: 44px;
+        border: 1px solid var(--border-hairline);
+        border-radius: var(--radius-md);
+        background: var(--bg-subtle);
+        cursor: pointer;
+        transition: border-color 150ms var(--ease-settle), background-color 150ms var(--ease-settle);
+      }
+
+      .radio-card:hover {
+        border-color: var(--border-strong);
+      }
+
+      .radio-card.selected {
+        background: var(--accent-primary-soft);
+        border-color: var(--accent-primary);
+      }
+
+      .radio-card input[type="radio"] {
+        accent-color: var(--accent-primary);
+        width: 16px;
+        height: 16px;
+        margin: 0;
+        cursor: pointer;
+      }
+
+      .radio-card-text {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+
+      .radio-card-title {
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        white-space: nowrap;
+      }
+
+      .radio-card-sub {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        white-space: nowrap;
+      }
+
+      .boxes-grid {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        gap: 10px;
+        margin-bottom: 18px;
+      }
+
+      .num-box {
+        border: 2px solid var(--border-hairline);
+        background: var(--bg-subtle);
+        border-radius: var(--radius-md);
+        padding: 14px 6px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        min-height: 92px;
+        transition: transform 180ms var(--ease-settle), background-color 180ms var(--ease-settle),
+          border-color 180ms var(--ease-settle), opacity 180ms var(--ease-settle);
+      }
+
+      .num-box-val {
+        font-family: var(--font-mono);
+        font-size: 1.5rem;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        line-height: 1;
+      }
+
+      .num-box-tag {
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-align: center;
+        line-height: 1.15;
+      }
+
+      .num-box.state-waiting {
+        background: var(--bg-subtle);
+        border-color: var(--border-hairline);
+        color: var(--text-muted);
+      }
+
+      .num-box.state-current {
+        background: var(--blue-bg);
+        border-color: var(--accent-primary);
+        color: var(--blue-text);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 14px rgba(37, 99, 235, 0.16);
+      }
+
+      .num-box.state-printed {
+        background: var(--emerald-bg);
+        border-color: var(--emerald-solid);
+        color: var(--emerald-text);
+      }
+
+      .num-box.state-skipped {
+        background: var(--amber-bg);
+        border-color: var(--amber-solid);
+        color: var(--amber-text);
+      }
+
+      .num-box.state-broken {
+        background: var(--red-bg);
+        border-color: var(--red-solid);
+        color: var(--red-text);
+      }
+
+      .num-box.state-never-run {
+        background: #f8fafc;
+        border-style: dashed;
+        border-color: #cbd5e1;
+        color: #94a3b8;
+        opacity: 0.85;
+      }
+
+      .legend-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px 20px;
+        padding-top: 14px;
+        border-top: 1px solid var(--border-hairline);
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+      }
+
+      .legend-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        font-weight: 600;
+      }
+
+      .legend-swatch {
+        width: 14px;
+        height: 14px;
+        border-radius: 4px;
+        border: 2px solid transparent;
+        flex-shrink: 0;
+      }
+
+      .swatch-current {
+        background: var(--blue-bg);
+        border-color: var(--accent-primary);
+      }
+      .swatch-printed {
+        background: var(--emerald-bg);
+        border-color: var(--emerald-solid);
+      }
+      .swatch-skipped {
+        background: var(--amber-bg);
+        border-color: var(--amber-solid);
+      }
+      .swatch-broken {
+        background: var(--red-bg);
+        border-color: var(--red-solid);
+      }
+      .swatch-never-run {
+        background: #f8fafc;
+        border: 2px dashed #cbd5e1;
+      }
+
+      /* Explanation Banner */
+      .explanation-box {
+        background: var(--accent-primary-soft);
+        border: 1px solid var(--blue-border);
+        border-radius: var(--radius-md);
+        padding: 13px 16px;
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+      }
+
+      .step-counter {
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--blue-text);
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      .explanation-text {
+        margin: 0;
+        font-size: 0.94rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      /* Playback Controls */
+      .playback-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+        padding-top: 14px;
+        border-top: 1px solid var(--border-hairline);
+      }
+
+      .playback-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        appearance: none;
+        border: 1px solid var(--border-strong);
+        background: var(--bg-surface);
+        color: var(--text-primary);
+        font-size: 0.875rem;
+        font-weight: 600;
+        padding: 8px 16px;
+        min-height: 40px;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: background-color 140ms var(--ease-settle), border-color 140ms var(--ease-settle),
+          transform 100ms var(--ease-settle);
+      }
+
+      .btn:hover:not(:disabled) {
+        background: var(--bg-subtle);
+      }
+
+      .btn:active:not(:disabled) {
+        transform: scale(0.98);
+      }
+
+      .btn:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+
+      .btn-primary {
+        background: var(--accent-primary);
+        border-color: var(--accent-primary);
+        color: #ffffff;
+      }
+
+      .btn-primary:hover:not(:disabled) {
+        background: var(--accent-primary-hover);
+      }
+
+      .speed-group {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.82rem;
+        color: var(--text-secondary);
+        font-weight: 600;
+      }
+
+      .speed-btn {
+        appearance: none;
+        border: 1px solid var(--border-hairline);
+        background: var(--bg-subtle);
+        color: var(--text-secondary);
+        font-size: 0.78rem;
+        font-weight: 700;
+        padding: 6px 10px;
+        min-height: 32px;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+      }
+
+      .speed-btn.active {
+        background: var(--text-primary);
+        border-color: var(--text-primary);
+        color: #ffffff;
+      }
+
+      /* Quiz Mode Panel */
+      .quiz-card {
+        margin-top: 14px;
+        background: var(--bg-subtle);
+        border: 1px solid var(--border-strong);
+        border-radius: var(--radius-md);
+        padding: 14px 16px;
+      }
+
+      .quiz-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 8px;
+      }
+
+      .quiz-title {
+        margin: 0;
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--text-primary);
+      }
+
+      .quiz-score {
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--blue-text);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .quiz-question {
+        margin: 0 0 12px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .quiz-options {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .quiz-opt-btn {
+        appearance: none;
+        border: 1px solid var(--border-strong);
+        background: var(--bg-surface);
+        color: var(--text-primary);
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        font-weight: 600;
+        padding: 10px 12px;
+        min-height: 42px;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        text-align: left;
+        transition: border-color 140ms var(--ease-settle), background-color 140ms var(--ease-settle);
+      }
+
+      .quiz-opt-btn:hover:not(:disabled) {
+        border-color: var(--accent-primary);
+        background: var(--accent-primary-soft);
+      }
+
+      .quiz-opt-btn:disabled {
+        cursor: default;
+      }
+
+      .quiz-opt-btn.correct {
+        background: var(--emerald-bg);
+        border-color: var(--emerald-solid);
+        color: var(--emerald-text);
+      }
+
+      .quiz-opt-btn.wrong {
+        background: var(--red-bg);
+        border-color: var(--red-solid);
+        color: var(--red-text);
+      }
+
+      .quiz-feedback {
+        margin-top: 10px;
+        padding: 10px 12px;
+        border-radius: var(--radius-sm);
+        font-size: 0.86rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .quiz-feedback.ok {
+        background: var(--emerald-bg);
+        border: 1px solid var(--emerald-border);
+        color: var(--emerald-text);
+      }
+
+      .quiz-feedback.bad {
+        background: var(--red-bg);
+        border: 1px solid var(--red-border);
+        color: var(--red-text);
+      }
+
+      /* Right Column: Python Code, State, Console */
+      .code-block {
+        background: var(--code-bg);
+        color: #e2e8f0;
+        border-radius: var(--radius-md);
+        padding: 12px 0;
+        font-family: var(--font-mono);
+        font-size: 0.84rem;
+        line-height: 1.65;
+        overflow-x: auto;
+      }
+
+      .code-line {
+        display: flex;
+        align-items: center;
+        padding: 2px 14px;
+        border-top: 1px solid transparent;
+        border-bottom: 1px solid transparent;
+        transition: background-color 140ms var(--ease-settle);
+        white-space: pre;
+      }
+
+      .code-line.active {
+        background: var(--code-line-active);
+        border-top-color: var(--code-line-border);
+        border-bottom-color: var(--code-line-border);
+      }
+
+      .code-gutter {
+        width: 44px;
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-right: 12px;
+        color: #64748b;
+        user-select: none;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .code-line.active .code-gutter {
+        color: #38bdf8;
+        font-weight: 700;
+      }
+
+      .code-pointer {
+        visibility: hidden;
+        color: #38bdf8;
+        font-size: 0.72rem;
+      }
+
+      .code-line.active .code-pointer {
+        visibility: visible;
+      }
+
+      .code-line.skipped-line {
+        background: rgba(148, 163, 184, 0.1);
+        opacity: 0.45;
+      }
+
+      .code-line.skipped-line .code-text {
+        color: #94a3b8;
+        text-decoration: line-through;
+        text-decoration-color: rgba(148, 163, 184, 0.65);
+      }
+
+      .code-skip-tag {
+        margin-left: auto;
+        padding-left: 14px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #fcd34d;
+        letter-spacing: 0.02em;
+      }
+
+      .code-editor-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .code-editor {
+        width: 100%;
+        min-height: 240px;
+        background: var(--code-bg);
+        color: #f8fafc;
+        border: 1px solid #334155;
+        border-radius: var(--radius-md);
+        padding: 12px 14px;
+        font-family: var(--font-mono);
+        font-size: 0.84rem;
+        line-height: 1.65;
+        resize: vertical;
+      }
+
+      .code-editor:focus {
+        outline: 2px solid #38bdf8;
+        outline-offset: 1px;
+      }
+
+      .code-editor-hint {
+        margin: 0;
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+      }
+
+      .code-editor-error {
+        margin: 0;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--red-text);
+        background: var(--red-bg);
+        border: 1px solid var(--red-border);
+        border-radius: var(--radius-sm);
+        padding: 8px 10px;
+      }
+
+      .code-editor-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      /* Syntax tokens */
+      .tok-kw {
+        color: #7dd3fc;
+        font-weight: 600;
+      }
+      .tok-ctrl {
+        color: #fda4af;
+        font-weight: 700;
+      }
+      .tok-fn {
+        color: #c4b5fd;
+      }
+      .tok-str {
+        color: #86efac;
+      }
+      .tok-num {
+        color: #fcd34d;
+      }
+
+      /* State Panel */
+      .state-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .state-cell {
+        background: var(--bg-subtle);
+        border: 1px solid var(--border-hairline);
+        border-radius: var(--radius-md);
+        padding: 10px 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+
+      .state-key {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        font-weight: 600;
+      }
+
+      .state-val {
+        font-family: var(--font-mono);
+        font-size: 0.92rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* Dedicated Output Console */
+      .standalone-console {
+        margin-top: 20px;
+      }
+
+      .console-box {
+        background: #0f172a;
+        color: #f8fafc;
+        border-radius: var(--radius-md);
+        padding: 14px 16px;
+        font-family: var(--font-mono);
+        font-size: 0.84rem;
+        min-height: 112px;
+        max-height: 210px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .console-empty {
+        color: #94a3b8;
+        font-style: italic;
+      }
+
+      .console-line {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .console-idx {
+        color: #64748b;
+        font-size: 0.75rem;
+        user-select: none;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .console-source {
+        color: #7dd3fc;
+        font-size: 0.75rem;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      .console-text {
+        color: #a7f3d0;
+      }
+
+      /* Bottom Concept Cheat Sheet */
+      .concepts-row {
+        margin-top: 22px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .concept-item {
+        background: var(--bg-surface);
+        border: 1px solid var(--border-hairline);
+        border-radius: var(--radius-lg);
+        padding: 16px 18px;
+      }
+
+      .concept-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 6px;
+      }
+
+      .concept-keyword {
+        font-family: var(--font-mono);
+        font-size: 1rem;
+        font-weight: 700;
+      }
+
+      .kw-break {
+        color: var(--red-text);
+      }
+      .kw-continue {
+        color: var(--amber-text);
+      }
+      .kw-pass {
+        color: var(--emerald-text);
+      }
+
+      .concept-role {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--text-muted);
+      }
+
+      .concept-desc {
+        margin: 0;
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      @media (max-width: 980px) {
+        .sandbox-grid {
+          grid-template-columns: 1fr;
+        }
+        .concepts-row {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .topbar-inner {
+          padding: 12px 16px;
+        }
+        .app-container {
+          padding: 16px;
+        }
+        .mode-selector {
+          grid-template-columns: 1fr;
+        }
+        .boxes-grid {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+        .road-stage {
+          height: 290px;
+        }
+        .orbit-hint {
+          display: none;
+        }
+        .car-state-caption {
+          max-width: calc(100% - 24px);
+        }
+        .tab-bar {
+          width: 100%;
+        }
+        .tab-btn {
+          flex: 1;
+          text-align: center;
+          padding: 8px 10px;
+          font-size: 0.8rem;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <h1 class="brand-title">Python Loop Control Simulator</h1>
+        <div class="tab-bar" role="tablist" aria-label="Simulator Tabs">
+          <button
+            id="tab-btn-traffic"
+            class="tab-btn active"
+            role="tab"
+            aria-selected="true"
+            aria-controls="panel-traffic"
+            type="button"
+          >
+            Tab 1: Traffic Light (while True)
+          </button>
+          <button
+            id="tab-btn-numbers"
+            class="tab-btn"
+            role="tab"
+            aria-selected="false"
+            aria-controls="panel-numbers"
+            type="button"
+          >
+            Tab 2: Number Demo (for loop)
+          </button>
+        </div>
+        <div class="topbar-meta">
+          <span id="xp-readout" class="xp-readout" aria-live="polite">
+            XP: 0 <span class="xp-level-sep">·</span> <span class="xp-level-name">Level 1: Shuruati</span>
+          </span>
+          <button id="btn-sound-toggle" class="btn-mini active" type="button" aria-pressed="true">
+            Sound: ON
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="app-container">
+      <div class="intro-strip">
+        <h2 id="tab-heading" class="intro-heading">Traffic Light Simulator — while True, continue &amp; break</h2>
+        <p id="tab-subheading" class="intro-sub">
+          Har step par dekho Python code line-by-line kaise chalta hai aur car par kya asar padta hai.
+        </p>
+      </div>
+
+      <div class="sandbox-grid">
+        <!-- LEFT ZONE: Interactive Visual Stage + Explanation + Playback -->
+        <div class="stack-col">
+          <!-- TAB 1 STAGE -->
+          <section id="panel-traffic" class="panel" role="tabpanel" aria-labelledby="tab-btn-traffic">
+            <div class="section-header">
+              <h3 class="section-title">Live 3D Traffic Road</h3>
+              <div class="stage-header-actions">
+                <span class="section-meta" id="traffic-mode-label">Din Mode · Loop Taiyar</span>
+                <button id="btn-camera-angle" class="camera-btn" type="button">
+                  📷 Camera Angle: Perspective
+                </button>
+              </div>
+            </div>
+
+            <div class="traffic-controls-top">
+              <button
+                id="btn-night-toggle"
+                class="toggle-btn night-toggle"
+                type="button"
+                aria-pressed="false"
+              >
+                <span class="toggle-switch" aria-hidden="true"><span class="toggle-knob"></span></span>
+                <span class="toggle-text-wrap">
+                  <span id="night-toggle-label">Night Mode: OFF</span>
+                  <span class="toggle-hint">Yellow skip — continue</span>
+                </span>
+              </button>
+
+              <button
+                id="btn-ambulance-toggle"
+                class="toggle-btn ambulance-toggle"
+                type="button"
+                aria-pressed="false"
+              >
+                <span class="toggle-switch" aria-hidden="true"><span class="toggle-knob"></span></span>
+                <span class="toggle-text-wrap">
+                  <span id="ambulance-toggle-label">Ambulance: OFF</span>
+                  <span class="toggle-hint">Red light par bhi — continue</span>
+                </span>
+              </button>
+
+              <button
+                id="btn-convoy-toggle"
+                class="toggle-btn convoy-toggle"
+                type="button"
+                aria-pressed="false"
+              >
+                <span class="toggle-switch" aria-hidden="true"><span class="toggle-knob"></span></span>
+                <span class="toggle-text-wrap">
+                  <span id="convoy-toggle-label">CM Convoy: OFF</span>
+                  <span class="toggle-hint">VIP aaye, traffic ruke — break</span>
+                </span>
+              </button>
+
+              <button
+                id="btn-break-toggle"
+                class="toggle-btn break-toggle"
+                type="button"
+                aria-pressed="false"
+              >
+                <span class="toggle-switch" aria-hidden="true"><span class="toggle-knob"></span></span>
+                <span class="toggle-text-wrap">
+                  <span id="break-toggle-label">Break Now: OFF</span>
+                  <span class="toggle-hint">Manual loop roko — break</span>
+                </span>
+              </button>
+
+              <button
+                id="btn-for-toggle"
+                class="toggle-btn for-toggle"
+                type="button"
+                aria-pressed="false"
+              >
+                <span class="toggle-switch" aria-hidden="true"><span class="toggle-knob"></span></span>
+                <span class="toggle-text-wrap">
+                  <span id="for-toggle-label">for loop Mode: OFF</span>
+                  <span class="toggle-hint">while True ↔ for range(6)</span>
+                </span>
+              </button>
+            </div>
+
+            <div id="road-stage" class="road-stage">
+              <div id="three-mount" class="three-mount" aria-label="3D Traffic Road Simulator"></div>
+              <div id="stage-status-tag" class="stage-status-tag">Signal: Taiyar</div>
+              <div id="signal-label-box" class="signal-label-box">Taiyar</div>
+              <div id="car-state-caption" class="car-state-caption">Traffic: Start hone ka intezaar</div>
+              <div class="orbit-hint">Mouse drag: ghumao · Scroll: zoom</div>
+            </div>
+          </section>
+
+          <!-- TAB 2 STAGE -->
+          <section id="panel-numbers" class="panel hidden" role="tabpanel" aria-labelledby="tab-btn-numbers">
+            <div class="section-header">
+              <h3 class="section-title">Loop Statement Chuno</h3>
+              <span class="section-meta">for i in range(1, 8)</span>
+            </div>
+
+            <div class="mode-selector" role="radiogroup" aria-label="Loop control statement">
+              <label class="radio-card selected" data-mode="break">
+                <input type="radio" name="num-mode" value="break" checked />
+                <div class="radio-card-text">
+                  <span class="radio-card-title">break (at 5)</span>
+                  <span class="radio-card-sub">Loop rok do</span>
+                </div>
+              </label>
+
+              <label class="radio-card" data-mode="continue">
+                <input type="radio" name="num-mode" value="continue" />
+                <div class="radio-card-text">
+                  <span class="radio-card-title">continue (at 3)</span>
+                  <span class="radio-card-sub">3 ko skip karo</span>
+                </div>
+              </label>
+
+              <label class="radio-card" data-mode="pass">
+                <input type="radio" name="num-mode" value="pass" />
+                <div class="radio-card-text">
+                  <span class="radio-card-title">pass (at 3)</span>
+                  <span class="radio-card-sub">Kuch mat karo</span>
+                </div>
+              </label>
+            </div>
+
+            <div id="boxes-grid" class="boxes-grid" aria-live="polite"></div>
+
+            <div class="legend-row" aria-label="Box state legend">
+              <span class="legend-item"><span class="legend-swatch swatch-current"></span> Current (Abhi)</span>
+              <span class="legend-item"><span class="legend-swatch swatch-printed"></span> Printed (Chhapa)</span>
+              <span class="legend-item"><span class="legend-swatch swatch-skipped"></span> Skipped (Chhoda)</span>
+              <span class="legend-item"><span class="legend-swatch swatch-broken"></span> Broken (Toota)</span>
+              <span class="legend-item"><span class="legend-swatch swatch-never-run"></span> Never Run (Nahi Chala)</span>
+            </div>
+          </section>
+
+          <!-- SHARED EXPLANATION, QUIZ & PLAYBACK CONTROLS -->
+          <section class="panel">
+            <div class="explanation-box" aria-live="polite">
+              <span id="step-counter" class="step-counter">Step 0</span>
+              <p id="explanation-text" class="explanation-text">
+                Shuru karne ke liye "Next Step" ya "Auto Play" dabao.
+              </p>
+            </div>
+
+            <div id="quiz-card" class="quiz-card hidden" aria-live="polite">
+              <div class="quiz-head">
+                <h4 class="quiz-title">Quiz Mode — Agla Output Predict Karo</h4>
+                <span id="quiz-score" class="quiz-score">Score: 0 / 0</span>
+              </div>
+              <p id="quiz-question" class="quiz-question"></p>
+              <div id="quiz-options" class="quiz-options"></div>
+              <div id="quiz-feedback" class="quiz-feedback hidden"></div>
+            </div>
+
+            <div class="playback-bar" style="margin-top: 14px;">
+              <div class="playback-actions">
+                <button id="btn-back" class="btn" type="button" disabled>← Step Back</button>
+                <button id="btn-next" class="btn btn-primary" type="button">Next Step →</button>
+                <button id="btn-play" class="btn" type="button">▶ Auto Play</button>
+                <button id="btn-reset" class="btn" type="button">↺ Reset</button>
+              </div>
+
+              <div class="playback-actions">
+                <button
+                  id="btn-quiz-toggle"
+                  class="toggle-btn quiz-toggle"
+                  type="button"
+                  aria-pressed="false"
+                  style="min-height: 36px; padding: 6px 12px;"
+                >
+                  <span class="toggle-switch" aria-hidden="true"><span class="toggle-knob"></span></span>
+                  <span id="quiz-toggle-label">Quiz Mode: OFF</span>
+                </button>
+
+                <div class="speed-group" aria-label="Playback speed">
+                  <span>Raftar:</span>
+                  <button id="speed-normal" class="speed-btn active" type="button">Normal</button>
+                  <button id="speed-fast" class="speed-btn" type="button">Tez</button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- RIGHT ZONE: Python Code + State Panel + Output Console -->
+        <div class="stack-col">
+          <section class="panel">
+            <div class="section-header">
+              <h3 class="section-title">Python Code Execution</h3>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <button id="btn-reset-code" class="btn-mini hidden" type="button">Default Code</button>
+                <button id="btn-edit-code" class="btn-mini" type="button">Code Edit Karo</button>
+              </div>
+            </div>
+            <div id="code-block" class="code-block" role="region" aria-label="Python Code"></div>
+            <div id="code-editor-wrap" class="code-editor-wrap hidden">
+              <textarea
+                id="code-editor"
+                class="code-editor"
+                spellcheck="false"
+                aria-label="Python Code Editor"
+              ></textarea>
+              <p id="code-editor-hint" class="code-editor-hint"></p>
+              <p id="code-editor-error" class="code-editor-error hidden"></p>
+              <div class="code-editor-actions">
+                <button id="btn-apply-code" class="btn-mini active" type="button">Apply &amp; Run</button>
+                <button id="btn-cancel-edit" class="btn-mini" type="button">Cancel</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="section-header">
+              <h3 class="section-title">State Panel (Variables)</h3>
+              <span class="section-meta">Live variables</span>
+            </div>
+            <div id="state-grid" class="state-grid" aria-live="polite"></div>
+          </section>
+        </div>
+      </div>
+
+      <!-- SEPARATE DEDICATED OUTPUT CONSOLE FOR ALL print() MESSAGES -->
+      <section class="panel standalone-console" aria-label="Output Console">
+        <div class="section-header">
+          <h3 class="section-title">Output Console — Sab print() Messages</h3>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span class="section-meta" id="console-count">0 messages</span>
+            <button id="btn-clear-console" class="btn-mini" type="button">Console Saaf Karo</button>
+          </div>
+        </div>
+        <div id="console-box" class="console-box" aria-live="polite"></div>
+      </section>
+
+      <!-- Hinglish Quick Reference Row -->
+      <section class="concepts-row" aria-label="Loop Control Summary">
+        <article class="concept-item">
+          <div class="concept-head">
+            <span class="concept-keyword kw-break">break</span>
+            <span class="concept-role">Turant Exit</span>
+          </div>
+          <p class="concept-desc">
+            Loop ko wahin tod deta hai aur seedha loop ke bahar aa jata hai. Baaki bache hue steps kabhi nahi chalte.
+          </p>
+        </article>
+
+        <article class="concept-item">
+          <div class="concept-head">
+            <span class="concept-keyword kw-continue">continue</span>
+            <span class="concept-role">Step Skip Karo</span>
+          </div>
+          <p class="concept-desc">
+            Sirf abhi waali iteration ke neeche ki lines skip karta hai aur loop ke agle turn par chala jata hai.
+          </p>
+        </article>
+
+        <article class="concept-item">
+          <div class="concept-head">
+            <span class="concept-keyword kw-pass">pass</span>
+            <span class="concept-role">Khaali Jagah</span>
+          </div>
+          <p class="concept-desc">
+            Kuch bhi nahi karta! Jab Python mein khaali block chhodna ho tab likhte hain — loop normally aage badhta hai.
+          </p>
+        </article>
+      </section>
+    </main>
+
+    <script type="module">
+      import * as THREE from "three";
+      import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+      import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+
+      (function () {
+        // ============================================================
+        // 1. SHARED UI STATE, XP & SOUND ENGINE
+        // ============================================================
+        let activeTab = "traffic"; // "traffic" | "numbers"
+        let playTimer = null;
+        let speedMs = 950;
+        let soundEnabled = true;
+        let audioCtx = null;
+        let lastSirenAt = 0;
+
+        let xpTotal = 0;
+        let maxTrafficStepXp = 0;
+        let maxNumberStepXp = 0;
+
+        let quizMode = false;
+        let quizScoreCorrect = 0;
+        let quizScoreTotal = 0;
+        let currentQuiz = null;
+
+        let isEditingCode = false;
+
+        const tabBtnTraffic = document.getElementById("tab-btn-traffic");
+        const tabBtnNumbers = document.getElementById("tab-btn-numbers");
+        const panelTraffic = document.getElementById("panel-traffic");
+        const panelNumbers = document.getElementById("panel-numbers");
+        const tabHeading = document.getElementById("tab-heading");
+        const tabSubheading = document.getElementById("tab-subheading");
+        const xpReadout = document.getElementById("xp-readout");
+        const btnSoundToggle = document.getElementById("btn-sound-toggle");
+
+        const codeBlock = document.getElementById("code-block");
+        const btnEditCode = document.getElementById("btn-edit-code");
+        const btnResetCode = document.getElementById("btn-reset-code");
+        const codeEditorWrap = document.getElementById("code-editor-wrap");
+        const codeEditor = document.getElementById("code-editor");
+        const codeEditorHint = document.getElementById("code-editor-hint");
+        const codeEditorError = document.getElementById("code-editor-error");
+        const btnApplyCode = document.getElementById("btn-apply-code");
+        const btnCancelEdit = document.getElementById("btn-cancel-edit");
+
+        const stateGrid = document.getElementById("state-grid");
+        const consoleBox = document.getElementById("console-box");
+        const consoleCount = document.getElementById("console-count");
+        const stepCounter = document.getElementById("step-counter");
+        const explanationText = document.getElementById("explanation-text");
+
+        const btnBack = document.getElementById("btn-back");
+        const btnNext = document.getElementById("btn-next");
+        const btnPlay = document.getElementById("btn-play");
+        const btnReset = document.getElementById("btn-reset");
+        const btnQuizToggle = document.getElementById("btn-quiz-toggle");
+        const quizToggleLabel = document.getElementById("quiz-toggle-label");
+        const speedNormalBtn = document.getElementById("speed-normal");
+        const speedFastBtn = document.getElementById("speed-fast");
+
+        const quizCard = document.getElementById("quiz-card");
+        const quizScoreEl = document.getElementById("quiz-score");
+        const quizQuestionEl = document.getElementById("quiz-question");
+        const quizOptionsEl = document.getElementById("quiz-options");
+        const quizFeedbackEl = document.getElementById("quiz-feedback");
+
+        // Tab 1 Elements
+        const btnNightToggle = document.getElementById("btn-night-toggle");
+        const nightToggleLabel = document.getElementById("night-toggle-label");
+        const btnAmbulanceToggle = document.getElementById("btn-ambulance-toggle");
+        const ambulanceToggleLabel = document.getElementById("ambulance-toggle-label");
+        const btnConvoyToggle = document.getElementById("btn-convoy-toggle");
+        const convoyToggleLabel = document.getElementById("convoy-toggle-label");
+        const btnBreakToggle = document.getElementById("btn-break-toggle");
+        const breakToggleLabel = document.getElementById("break-toggle-label");
+        const btnForToggle = document.getElementById("btn-for-toggle");
+        const forToggleLabel = document.getElementById("for-toggle-label");
+        const btnCameraAngle = document.getElementById("btn-camera-angle");
+        const btnClearConsole = document.getElementById("btn-clear-console");
+        const trafficModeLabel = document.getElementById("traffic-mode-label");
+        const roadStage = document.getElementById("road-stage");
+        const threeMount = document.getElementById("three-mount");
+        const stageStatusTag = document.getElementById("stage-status-tag");
+        const signalLabelBox = document.getElementById("signal-label-box");
+        const carStateCaption = document.getElementById("car-state-caption");
+
+        // Tab 2 Elements
+        const modeRadios = document.querySelectorAll('input[name="num-mode"]');
+        const radioCards = document.querySelectorAll(".radio-card");
+        const boxesGrid = document.getElementById("boxes-grid");
+
+        // ============================================================
+        // 2. SOUND EFFECTS (WEB AUDIO API) & XP SYSTEM
+        // ============================================================
+        function getAudioContext() {
+          if (!soundEnabled) return null;
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (!AudioCtx) return null;
+          if (!audioCtx) {
+            audioCtx = new AudioCtx();
+          }
+          if (audioCtx.state === "suspended") {
+            audioCtx.resume().catch(() => {});
+          }
+          return audioCtx;
+        }
+
+        function playTone(freq, durationSec, type, delaySec, gainPeak) {
+          const ctx = getAudioContext();
+          if (!ctx) return;
+          try {
+            const now = ctx.currentTime + (delaySec || 0);
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = type || "sine";
+            osc.frequency.setValueAtTime(freq, now);
+            gain.gain.setValueAtTime(0.0001, now);
+            gain.gain.exponentialRampToValueAtTime(gainPeak || 0.06, now + 0.015);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + durationSec);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(now);
+            osc.stop(now + durationSec + 0.02);
+          } catch (_) {}
+        }
+
+        function playSirenBurst() {
+          if (!soundEnabled) return;
+          const nowMs = performance.now();
+          if (nowMs - lastSirenAt < 650) return;
+          lastSirenAt = nowMs;
+          playTone(740, 0.16, "triangle", 0, 0.045);
+          playTone(580, 0.18, "triangle", 0.16, 0.045);
+          playTone(740, 0.16, "triangle", 0.34, 0.04);
+        }
+
+        function playConvoyHorn() {
+          if (!soundEnabled) return;
+          playTone(293.66, 0.14, "sawtooth", 0, 0.035);
+          playTone(440.0, 0.22, "triangle", 0.12, 0.05);
+        }
+
+        function playSignalSound(signalType) {
+          if (!soundEnabled) return;
+          if (signalType === "Green") {
+            playTone(587.33, 0.11, "sine", 0, 0.06);
+            playTone(783.99, 0.14, "sine", 0.08, 0.06);
+          } else if (signalType === "Yellow") {
+            playTone(466.16, 0.14, "triangle", 0, 0.055);
+          } else if (signalType === "Red") {
+            playTone(311.13, 0.18, "sine", 0, 0.065);
+          } else if (signalType === "YellowSkipped") {
+            playTone(698.46, 0.08, "sine", 0, 0.045);
+          } else if (signalType === "Break") {
+            playTone(392.0, 0.11, "triangle", 0, 0.06);
+            playTone(261.63, 0.18, "triangle", 0.09, 0.06);
+          }
+        }
+
+        function addXp(amount) {
+          if (!amount || amount <= 0) return;
+          xpTotal += amount;
+          renderXp();
+        }
+
+        function getLevelLabel(xp) {
+          if (xp >= 250) return "Level 4: Loop Master";
+          if (xp >= 120) return "Level 3: Code Ninja";
+          if (xp >= 50) return "Level 2: Loop Explorer";
+          return "Level 1: Shuruati";
+        }
+
+        function renderXp() {
+          xpReadout.innerHTML = `XP: ${xpTotal} <span class="xp-level-sep">·</span> <span class="xp-level-name">${getLevelLabel(
+            xpTotal
+          )}</span>`;
+        }
+
+        // ============================================================
+        // 3. SAFE PYTHON SYNTAX HIGHLIGHTER & ARITHMETIC PARSER
+        // ============================================================
+        function escapeHtml(str) {
+          return str
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+        }
+
+        function highlightPython(line) {
+          const parts = line.split(/("[^"]*")/g);
+          return parts
+            .map((part) => {
+              if (part.startsWith('"') && part.endsWith('"')) {
+                return `<span class="tok-str">${escapeHtml(part)}</span>`;
+              }
+              let html = escapeHtml(part);
+              html = html.replace(
+                /\b(break|continue|pass)\b/g,
+                '<span class="tok-ctrl">$1</span>'
+              );
+              html = html.replace(
+                /\b(while|for|in|if|elif|else|and|or|True|False)\b/g,
+                '<span class="tok-kw">$1</span>'
+              );
+              html = html.replace(/\b(print|range|len)\b/g, '<span class="tok-fn">$1</span>');
+              html = html.replace(/\b(\d+)\b/g, '<span class="tok-num">$1</span>');
+              return html;
+            })
+            .join("");
+        }
+
+        let globalOutputs = [];
+        let nextGlobalOutputId = 1;
+
+        function addGlobalOutput(tabLabel, step, text) {
+          const entry = {
+            id: nextGlobalOutputId++,
+            tabLabel,
+            step,
+            text,
+          };
+          globalOutputs.push(entry);
+          return entry.id;
+        }
+
+        function removeGlobalOutputById(id) {
+          if (!id) return;
+          globalOutputs = globalOutputs.filter((item) => item.id !== id);
+        }
+
+        function renderCodeLines(lines, activeLineIdx, skippedIndices) {
+          const skipSet = skippedIndices instanceof Set ? skippedIndices : new Set(skippedIndices || []);
+          codeBlock.innerHTML = lines
+            .map((text, idx) => {
+              const isActive = idx === activeLineIdx;
+              const isSkipped = skipSet.has(idx);
+              return `
+                <div class="code-line ${isActive ? "active" : ""} ${isSkipped ? "skipped-line" : ""}">
+                  <span class="code-gutter">
+                    <span class="code-pointer" aria-hidden="true">▶</span>
+                    <span>${idx + 1}</span>
+                  </span>
+                  <span class="code-text">${highlightPython(text)}</span>
+                  ${isSkipped ? '<span class="code-skip-tag">Skipped</span>' : ""}
+                </div>
+              `;
+            })
+            .join("");
+        }
+
+        function renderState(entries) {
+          stateGrid.innerHTML = entries
+            .map(
+              ([key, val]) => `
+              <div class="state-cell">
+                <span class="state-key">${escapeHtml(key)}</span>
+                <span class="state-val">${escapeHtml(String(val))}</span>
+              </div>
+            `
+            )
+            .join("");
+        }
+
+        function renderConsole() {
+          consoleCount.textContent = `${globalOutputs.length} ${
+            globalOutputs.length === 1 ? "message" : "messages"
+          }`;
+          if (globalOutputs.length === 0) {
+            consoleBox.innerHTML =
+              '<div class="console-empty">Output Console abhi khaali hai — kisi bhi tab mein "Next Step" ya "Auto Play" dabao.</div>';
+            return;
+          }
+          consoleBox.innerHTML = globalOutputs
+            .map(
+              (item) => `
+              <div class="console-line">
+                <span class="console-idx">&gt;</span>
+                <span class="console-source">[${escapeHtml(item.tabLabel)} · Step ${item.step}]</span>
+                <span class="console-text">${escapeHtml(item.text)}</span>
+              </div>
+            `
+            )
+            .join("");
+          consoleBox.scrollTop = consoleBox.scrollHeight;
+        }
+
+        function evaluateSafeIntExpr(exprStr, vars) {
+          const cleaned = exprStr.replace(/\blen\s*\(\s*lights\s*\)/g, String(vars.lightsLen || 3));
+          const tokens = [];
+          let idx = 0;
+          while (idx < cleaned.length) {
+            const ch = cleaned[idx];
+            if (/\s/.test(ch)) {
+              idx++;
+              continue;
+            }
+            if (cleaned.slice(idx, idx + 2) === "//") {
+              tokens.push({ type: "op", val: "//" });
+              idx += 2;
+              continue;
+            }
+            if ("+-*%()".includes(ch)) {
+              tokens.push({ type: ch === "(" || ch === ")" ? "paren" : "op", val: ch });
+              idx++;
+              continue;
+            }
+            if (/\d/.test(ch)) {
+              let numStr = "";
+              while (idx < cleaned.length && /\d/.test(cleaned[idx])) {
+                numStr += cleaned[idx++];
+              }
+              tokens.push({ type: "num", val: parseInt(numStr, 10) });
+              continue;
+            }
+            if (ch === "i" && (idx + 1 >= cleaned.length || !/[a-zA-Z0-9_]/.test(cleaned[idx + 1]))) {
+              tokens.push({ type: "var", val: "i" });
+              idx++;
+              continue;
+            }
+            throw new Error(`Invalid token "${ch}"`);
+          }
+
+          let pos = 0;
+          function peek() {
+            return tokens[pos];
+          }
+          function consume() {
+            return tokens[pos++];
+          }
+
+          function parseAddSub() {
+            let left = parseMulDiv();
+            while (peek() && peek().type === "op" && (peek().val === "+" || peek().val === "-")) {
+              const op = consume().val;
+              const right = parseMulDiv();
+              left = op === "+" ? left + right : left - right;
+            }
+            return left;
+          }
+
+          function parseMulDiv() {
+            let left = parseUnary();
+            while (
+              peek() &&
+              peek().type === "op" &&
+              (peek().val === "*" || peek().val === "%" || peek().val === "//")
+            ) {
+              const op = consume().val;
+              const right = parseUnary();
+              if ((op === "%" || op === "//") && right === 0) {
+                throw new Error("Zero se divide nahi kar sakte!");
+              }
+              if (op === "*") left = left * right;
+              else if (op === "//") left = Math.floor(left / right);
+              else left = ((left % right) + right) % right;
+            }
+            return left;
+          }
+
+          function parseUnary() {
+            if (peek() && peek().type === "op" && (peek().val === "-" || peek().val === "+")) {
+              const op = consume().val;
+              const val = parseUnary();
+              return op === "-" ? -val : val;
+            }
+            return parsePrimary();
+          }
+
+          function parsePrimary() {
+            const tok = peek();
+            if (!tok) throw new Error("Expression adhoora hai");
+            if (tok.type === "num") {
+              consume();
+              return tok.val;
+            }
+            if (tok.type === "var") {
+              consume();
+              return vars.i;
+            }
+            if (tok.type === "paren" && tok.val === "(") {
+              consume();
+              const val = parseAddSub();
+              if (!peek() || peek().val !== ")") {
+                throw new Error("Closing ')' missing hai");
+              }
+              consume();
+              return val;
+            }
+            throw new Error("Unexpected syntax");
+          }
+
+          const result = parseAddSub();
+          if (pos !== tokens.length) throw new Error("Extra syntax mila");
+          return result;
+        }
+
+        // ============================================================
+        // 4. TAB 1 STATE & PYTHON LOOP ENGINE
+        // ============================================================
+        const DEFAULT_TRAFFIC_CONFIG = {
+          lights: ["Green", "Yellow", "Red"],
+          initI: 0,
+          indexExpr: "i % 3",
+          stepInc: 1,
+          skipLight: "Yellow",
+          forLoopMode: false,
+          forCount: 6,
+          customEdited: false,
+        };
+
+        let trafficConfig = {
+          lights: [...DEFAULT_TRAFFIC_CONFIG.lights],
+          initI: DEFAULT_TRAFFIC_CONFIG.initI,
+          indexExpr: DEFAULT_TRAFFIC_CONFIG.indexExpr,
+          stepInc: DEFAULT_TRAFFIC_CONFIG.stepInc,
+          skipLight: DEFAULT_TRAFFIC_CONFIG.skipLight,
+          forLoopMode: DEFAULT_TRAFFIC_CONFIG.forLoopMode,
+          forCount: DEFAULT_TRAFFIC_CONFIG.forCount,
+          customEdited: false,
+        };
+
+        function buildTrafficCodeSpec(cfg) {
+          const listStr = cfg.lights.map((l) => `"${l}"`).join(", ");
+          if (cfg.forLoopMode) {
+            const lines = [
+              `lights = [${listStr}]`,
+              `for i in range(${cfg.forCount}):`,
+              `    light = lights[${cfg.indexExpr}]`,
+              `    if night_mode and light == "${cfg.skipLight}":`,
+              "        continue",
+              "    if ambulance_aayi:",
+              '        print("AMBULANCE: Siren ke saath Red light par bhi nikal gayi!")',
+              "        continue",
+              "    if cm_convoy or break_now:",
+              "        break",
+              '    if light == "Green":',
+              '        print("GREEN: Normal traffic chal raha hai")',
+              '    elif light == "Yellow":',
+              '        print("YELLOW: Normal traffic slow ho raha hai")',
+              "    else:",
+              '        print("RED: Normal traffic ruk gaya")',
+              'print("Loop band ho gaya! (for / CM Convoy)")',
+            ];
+            const map = {
+              loopHeader: 1,
+              pickLight: 2,
+              incI: -1,
+              ifNight: 3,
+              continueLine: 4,
+              ifAmbulance: 5,
+              ambPrint: 6,
+              ambContinue: 7,
+              ifBreak: 8,
+              breakLine: 9,
+              ifGreen: 10,
+              printGreen: 11,
+              elifYellow: 12,
+              printYellow: 13,
+              elseRed: 14,
+              printRed: 15,
+              printDone: 16,
+              done: -1,
+            };
+            return { lines, map };
+          }
+          const lines = [
+            `lights = [${listStr}]`,
+            `i = ${cfg.initI}`,
+            "while True:",
+            `    light = lights[${cfg.indexExpr}]`,
+            `    i = i + ${cfg.stepInc}`,
+            `    if night_mode and light == "${cfg.skipLight}":`,
+            "        continue",
+            "    if ambulance_aayi:",
+            '        print("AMBULANCE: Siren ke saath Red light par bhi nikal gayi!")',
+            "        continue",
+            "    if cm_convoy or break_now:",
+            "        break",
+            '    if light == "Green":',
+            '        print("GREEN: Normal traffic chal raha hai")',
+            '    elif light == "Yellow":',
+            '        print("YELLOW: Normal traffic slow ho raha hai")',
+            "    else:",
+            '        print("RED: Normal traffic ruk gaya")',
+            'print("Loop band ho gaya! (CM Convoy / break)")',
+          ];
+          const map = {
+            loopHeader: 2,
+            pickLight: 3,
+            incI: 4,
+            ifNight: 5,
+            continueLine: 6,
+            ifAmbulance: 7,
+            ambPrint: 8,
+            ambContinue: 9,
+            ifBreak: 10,
+            breakLine: 11,
+            ifGreen: 12,
+            printGreen: 13,
+            elifYellow: 14,
+            printYellow: 15,
+            elseRed: 16,
+            printRed: 17,
+            printDone: 18,
+            done: -1,
+          };
+          return { lines, map };
+        }
+
+        const trafficState = {
+          stepCount: 0,
+          iteration: 0,
+          pc: "loopHeader",
+          i: 0,
+          light: "-",
+          nightMode: false,
+          ambulanceMode: false,
+          cmConvoy: false,
+          breakNow: false,
+          finished: false,
+          skippedJustNow: false,
+          skippedFromLine: null, // "night" | "ambulance" | null
+          activeLamp: "none",
+          carBehavior: "parked",
+          outputs: [],
+          explanation: 'Shuru karne ke liye "Next Step" ya "Auto Play" dabao.',
+        };
+
+        let trafficHistory = [];
+
+        function cloneTrafficState(st) {
+          return {
+            stepCount: st.stepCount,
+            iteration: st.iteration,
+            pc: st.pc,
+            i: st.i,
+            light: st.light,
+            nightMode: st.nightMode,
+            ambulanceMode: st.ambulanceMode,
+            cmConvoy: st.cmConvoy,
+            breakNow: st.breakNow,
+            finished: st.finished,
+            skippedJustNow: st.skippedJustNow,
+            skippedFromLine: st.skippedFromLine,
+            activeLamp: st.activeLamp,
+            carBehavior: st.carBehavior,
+            outputs: [...st.outputs],
+            explanation: st.explanation,
+          };
+        }
+
+        // ============================================================
+        // 5. THREE.JS 3D ROAD SCENE ENGINE
+        // ============================================================
+        const STOP_LINE_X = 4.0;
+        const ROAD_HALF_LEN = 75;
+        const CAMERA_PRESETS = [
+          {
+            name: "Perspective",
+            pos: new THREE.Vector3(-12.5, 8.2, 16.5),
+            target: new THREE.Vector3(0.5, 1.0, 0.0),
+          },
+          {
+            name: "Top Drone",
+            pos: new THREE.Vector3(-1.5, 23.0, 9.5),
+            target: new THREE.Vector3(0.0, 0.0, 0.0),
+          },
+          {
+            name: "Signal Close-up",
+            pos: new THREE.Vector3(12.0, 4.8, 10.8),
+            target: new THREE.Vector3(2.2, 2.2, 0.2),
+          },
+          {
+            name: "VIP / Siren Track",
+            pos: new THREE.Vector3(-9.0, 4.0, -9.8),
+            target: new THREE.Vector3(0.0, 1.0, -2.0),
+          },
+        ];
+        let activeCamPresetIdx = 0;
+        let isCameraDamping = false;
+
+        // Pre-allocated scratch vectors for zero-GC tick loop
+        const _camTargetPos = new THREE.Vector3();
+        const _camLookTarget = new THREE.Vector3();
+        const _skyDay = new THREE.Color(0xdbeafe);
+        const _skyNight = new THREE.Color(0x0b1224);
+        const _hemiDaySky = new THREE.Color(0xdbeafe);
+        const _hemiNightSky = new THREE.Color(0x1e3a8a);
+        const _hemiDayGround = new THREE.Color(0x3f6212);
+        const _hemiNightGround = new THREE.Color(0x0f172a);
+
+        // Software WebGL guard
+        const isSoftwareGl = (() => {
+          try {
+            const gl = document.createElement("canvas").getContext("webgl2");
+            if (!gl) return true;
+            const ext = gl.getExtension("WEBGL_debug_renderer_info");
+            const param = ext ? ext.UNMASKED_RENDERER_WEBGL : gl.RENDERER;
+            const gpu = String(gl.getParameter(param) || "");
+            gl.getExtension("WEBGL_lose_context")?.loseContext();
+            return /SwiftShader|llvmpipe|softpipe|Software|Basic Render/i.test(gpu);
+          } catch (_) {
+            return false;
+          }
+        })();
+
+        const threeScene = new THREE.Scene();
+        threeScene.background = _skyDay.clone();
+        threeScene.fog = new THREE.Fog(_skyDay.getHex(), 38, 105);
+
+        const threeCamera = new THREE.PerspectiveCamera(45, 16 / 9, 0.1, 200);
+        threeCamera.position.copy(CAMERA_PRESETS[0].pos);
+
+        const threeRenderer = new THREE.WebGLRenderer({
+          antialias: !isSoftwareGl,
+          powerPreference: "high-performance",
+        });
+        threeRenderer.outputColorSpace = THREE.SRGBColorSpace;
+        threeRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+        threeRenderer.toneMappingExposure = 1.1;
+        threeRenderer.setPixelRatio(isSoftwareGl ? 1 : Math.min(window.devicePixelRatio, 2));
+        threeRenderer.shadowMap.enabled = !isSoftwareGl;
+        threeRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        threeMount.appendChild(threeRenderer.domElement);
+
+        // Mandatory Studio Environment Reflections (RoomEnvironment)
+        const pmremGenerator = new THREE.PMREMGenerator(threeRenderer);
+        threeScene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
+        pmremGenerator.dispose();
+
+        const orbitControls = new OrbitControls(threeCamera, threeRenderer.domElement);
+        orbitControls.target.copy(CAMERA_PRESETS[0].target);
+        orbitControls.enableDamping = !isSoftwareGl;
+        orbitControls.dampingFactor = 0.07;
+        orbitControls.maxPolarAngle = Math.PI / 2 - 0.04;
+        orbitControls.minDistance = 7;
+        orbitControls.maxDistance = 42;
+        orbitControls.addEventListener("start", () => {
+          isCameraDamping = false;
+        });
+
+        // Warm Key + Cool Hemisphere + Subtle Rim Light
+        const hemiLight = new THREE.HemisphereLight(_hemiDaySky.getHex(), _hemiDayGround.getHex(), 0.72);
+        threeScene.add(hemiLight);
+
+        const sunLight = new THREE.DirectionalLight(0xfff4d6, 1.55);
+        sunLight.position.set(-18, 28, 16);
+        sunLight.castShadow = !isSoftwareGl;
+        sunLight.shadow.mapSize.width = 1024;
+        sunLight.shadow.mapSize.height = 1024;
+        sunLight.shadow.camera.near = 2;
+        sunLight.shadow.camera.far = 80;
+        sunLight.shadow.camera.left = -26;
+        sunLight.shadow.camera.right = 26;
+        sunLight.shadow.camera.top = 18;
+        sunLight.shadow.camera.bottom = -18;
+        sunLight.shadow.bias = -0.0005;
+        sunLight.shadow.normalBias = 0.02;
+        threeScene.add(sunLight);
+
+        const rimLight = new THREE.DirectionalLight(0x93c5fd, 0.45);
+        rimLight.position.set(18, 12, -18);
+        threeScene.add(rimLight);
+
+        // Procedural Road Canvas Texture
+        function createRoadTexture() {
+          const canvas = document.createElement("canvas");
+          canvas.width = 1024;
+          canvas.height = 256;
+          const ctx = canvas.getContext("2d");
+          ctx.fillStyle = "#334155";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+          // Subtle asphalt grain
+          for (let k = 0; k < 2800; k++) {
+            const rx = Math.random() * canvas.width;
+            const ry = Math.random() * canvas.height;
+            ctx.fillStyle = k % 2 === 0 ? "rgba(255,255,255,0.035)" : "rgba(0,0,0,0.06)";
+            ctx.fillRect(rx, ry, 2, 2);
+          }
+
+          // Edge lines
+          ctx.fillStyle = "#facc15";
+          ctx.fillRect(0, 12, canvas.width, 5);
+          ctx.fillStyle = "#e2e8f0";
+          ctx.fillRect(0, canvas.height - 17, canvas.width, 5);
+
+          // Center dashed divider between Priority Lane (z < 0) and Normal Lane (z > 0)
+          ctx.fillStyle = "#f8fafc";
+          for (let dx = 14; dx < canvas.width; dx += 52) {
+            ctx.fillRect(dx, canvas.height / 2 - 3, 28, 6);
+          }
+
+          const tex = new THREE.CanvasTexture(canvas);
+          tex.colorSpace = THREE.SRGBColorSpace;
+          tex.wrapS = THREE.RepeatWrapping;
+          tex.wrapT = THREE.ClampToEdgeWrapping;
+          tex.repeat.set(7, 1);
+          tex.anisotropy = threeRenderer.capabilities.getMaxAnisotropy();
+          return tex;
+        }
+
+        function createContactShadowTexture() {
+          const c = document.createElement("canvas");
+          c.width = 128;
+          c.height = 64;
+          const ctx = c.getContext("2d");
+          const grad = ctx.createRadialGradient(64, 32, 6, 64, 32, 58);
+          grad.addColorStop(0, "rgba(15, 23, 42, 0.52)");
+          grad.addColorStop(1, "rgba(15, 23, 42, 0)");
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, 0, 128, 64);
+          const tex = new THREE.CanvasTexture(c);
+          tex.colorSpace = THREE.SRGBColorSpace;
+          return tex;
+        }
+        const contactShadowTex = createContactShadowTexture();
+
+        // Ground, Road, Curbs, Stop Line, Zebra Crossing
+        const meadowMat = new THREE.MeshStandardMaterial({
+          color: 0x4d7c0f,
+          roughness: 0.94,
+          metalness: 0.0,
+        });
+        const groundMesh = new THREE.Mesh(new THREE.PlaneGeometry(220, 220), meadowMat);
+        groundMesh.rotation.x = -Math.PI / 2;
+        groundMesh.position.y = -0.04;
+        groundMesh.receiveShadow = true;
+        threeScene.add(groundMesh);
+
+        const roadTex = createRoadTexture();
+        const roadMat = new THREE.MeshStandardMaterial({
+          map: roadTex,
+          roughness: 0.82,
+          metalness: 0.05,
+        });
+        const roadMesh = new THREE.Mesh(new THREE.PlaneGeometry(ROAD_HALF_LEN * 2, 10.0), roadMat);
+        roadMesh.rotation.x = -Math.PI / 2;
+        roadMesh.position.y = 0.0;
+        roadMesh.receiveShadow = true;
+        threeScene.add(roadMesh);
+
+        // Curbs & Sidewalks
+        const curbMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 0.85, metalness: 0.05 });
+        [-5.6, 5.6].forEach((cz) => {
+          const curb = new THREE.Mesh(new THREE.BoxGeometry(ROAD_HALF_LEN * 2, 0.16, 1.3), curbMat);
+          curb.position.set(0, 0.08, cz);
+          curb.receiveShadow = true;
+          threeScene.add(curb);
+        });
+
+        // White Stop Line & Zebra Crossing (offset >= 0.02 above road, polygonOffset)
+        const roadMarkingMat = new THREE.MeshStandardMaterial({
+          color: 0xf8fafc,
+          roughness: 0.6,
+          metalness: 0.02,
+          polygonOffset: true,
+          polygonOffsetFactor: -1,
+          polygonOffsetUnits: -1,
+        });
+        const stopLineMesh = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.02, 9.2), roadMarkingMat);
+        stopLineMesh.position.set(STOP_LINE_X, 0.02, 0);
+        stopLineMesh.receiveShadow = true;
+        threeScene.add(stopLineMesh);
+
+        for (let i = 0; i < 6; i++) {
+          const stripe = new THREE.Mesh(new THREE.BoxGeometry(2.6, 0.02, 0.85), roadMarkingMat);
+          stripe.position.set(STOP_LINE_X + 2.2, 0.02, -3.75 + i * 1.5);
+          stripe.receiveShadow = true;
+          threeScene.add(stripe);
+        }
+
+        // Priority Lane Label ("VIP / AMBULANCE" subtle road strip)
+        function createLaneBadgeTexture(text) {
+          const c = document.createElement("canvas");
+          c.width = 512;
+          c.height = 128;
+          const ctx = c.getContext("2d");
+          ctx.clearRect(0, 0, 512, 128);
+          ctx.fillStyle = "rgba(254, 240, 138, 0.72)";
+          ctx.font = "bold 46px sans-serif";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(text, 256, 64);
+          const tex = new THREE.CanvasTexture(c);
+          tex.colorSpace = THREE.SRGBColorSpace;
+          tex.anisotropy = threeRenderer.capabilities.getMaxAnisotropy();
+          return tex;
+        }
+        const prioritySignPlane = new THREE.Mesh(
+          new THREE.PlaneGeometry(7.2, 1.8),
+          new THREE.MeshBasicMaterial({
+            map: createLaneBadgeTexture("VIP / AMBULANCE"),
+            transparent: true,
+            depthWrite: false,
+            polygonOffset: true,
+            polygonOffsetFactor: -1,
+          })
+        );
+        prioritySignPlane.rotation.x = -Math.PI / 2;
+        prioritySignPlane.position.set(-4.5, 0.025, -2.35);
+        threeScene.add(prioritySignPlane);
+
+        // Perimeter Trees (InstancedMesh trunks + 2-tier crowns)
+        const treeCoords = [];
+        for (let tx = -54; tx <= 54; tx += 11) {
+          treeCoords.push([tx + (Math.abs(tx) % 3) - 1, -10.5]);
+          treeCoords.push([tx - (Math.abs(tx) % 3) + 1, 10.8]);
+          if (Math.abs(tx) > 10) {
+            treeCoords.push([tx, -17.5]);
+            treeCoords.push([tx, 18.0]);
+          }
+        }
+        const trunkInst = new THREE.InstancedMesh(
+          new THREE.CylinderGeometry(0.18, 0.28, 1.8, 8),
+          new THREE.MeshStandardMaterial({ color: 0x78350f, roughness: 0.9 }),
+          treeCoords.length
+        );
+        const crownInst = new THREE.InstancedMesh(
+          new THREE.ConeGeometry(1.45, 3.2, 9),
+          new THREE.MeshStandardMaterial({ color: 0x15803d, roughness: 0.85 }),
+          treeCoords.length
+        );
+        const topCrownInst = new THREE.InstancedMesh(
+          new THREE.ConeGeometry(1.05, 2.3, 9),
+          new THREE.MeshStandardMaterial({ color: 0x16a34a, roughness: 0.82 }),
+          treeCoords.length
+        );
+        trunkInst.castShadow = !isSoftwareGl;
+        crownInst.castShadow = !isSoftwareGl;
+        topCrownInst.castShadow = !isSoftwareGl;
+
+        const dummyObj = new THREE.Object3D();
+        const tintColor = new THREE.Color();
+        treeCoords.forEach(([tx, tz], idx) => {
+          const s = 0.85 + ((idx * 37) % 30) / 100;
+          dummyObj.position.set(tx, 0.9 * s, tz);
+          dummyObj.scale.set(s, s, s);
+          dummyObj.rotation.y = idx * 0.7;
+          dummyObj.updateMatrix();
+          trunkInst.setMatrixAt(idx, dummyObj.matrix);
+
+          dummyObj.position.set(tx, 2.6 * s, tz);
+          dummyObj.updateMatrix();
+          crownInst.setMatrixAt(idx, dummyObj.matrix);
+          tintColor.setHSL(0.35 + (idx % 5) * 0.012, 0.62, 0.28 + (idx % 4) * 0.03);
+          crownInst.setColorAt(idx, tintColor);
+
+          dummyObj.position.set(tx, 4.0 * s, tz);
+          dummyObj.updateMatrix();
+          topCrownInst.setMatrixAt(idx, dummyObj.matrix);
+          tintColor.offsetHSL(0, 0, 0.04);
+          topCrownInst.setColorAt(idx, tintColor);
+        });
+        trunkInst.instanceMatrix.needsUpdate = true;
+        crownInst.instanceMatrix.needsUpdate = true;
+        topCrownInst.instanceMatrix.needsUpdate = true;
+        if (crownInst.instanceColor) crownInst.instanceColor.needsUpdate = true;
+        if (topCrownInst.instanceColor) topCrownInst.instanceColor.needsUpdate = true;
+        trunkInst.computeBoundingSphere();
+        crownInst.computeBoundingSphere();
+        topCrownInst.computeBoundingSphere();
+        threeScene.add(trunkInst, crownInst, topCrownInst);
+
+        // Streetlamps (turn on warm glow in Night Mode)
+        const streetLampGlowMats = [];
+        const streetLampLights = [];
+        const steelMat = new THREE.MeshStandardMaterial({ color: 0x334155, metalness: 0.75, roughness: 0.35 });
+        [-28, -10, 14, 32].forEach((lx) => {
+          const group = new THREE.Group();
+          group.position.set(lx, 0, -5.8);
+          const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.12, 5.4, 10), steelMat);
+          pole.position.y = 2.7;
+          const arm = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.1, 1.3), steelMat);
+          arm.position.set(0, 5.35, 0.55);
+          const bulbMat = new THREE.MeshStandardMaterial({
+            color: 0xfef08a,
+            emissive: 0xfbbf24,
+            emissiveIntensity: 0.0,
+            roughness: 0.2,
+          });
+          streetLampGlowMats.push(bulbMat);
+          const bulb = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.12, 0.56), bulbMat);
+          bulb.position.set(0, 5.25, 1.05);
+          group.add(pole, arm, bulb);
+
+          if (lx === -10 || lx === 14) {
+            const pLight = new THREE.PointLight(0xfde68a, 0, 18, 1.6);
+            pLight.position.set(0, 5.0, 1.1);
+            group.add(pLight);
+            streetLampLights.push(pLight);
+          }
+          threeScene.add(group);
+        });
+
+        // Low-rise City Backdrop Blocks (distant right/back horizon accent, open horizon)
+        const bldgColors = [0xcbd5e1, 0x94a3b8, 0xe2e8f0, 0xbfdbfe];
+        for (let bx = -44; bx <= 44; bx += 14) {
+          const bh = 4.2 + ((Math.abs(bx) * 3) % 5);
+          const bldg = new THREE.Mesh(
+            new THREE.BoxGeometry(7.5, bh, 5.5),
+            new THREE.MeshStandardMaterial({
+              color: bldgColors[Math.abs(bx) % bldgColors.length],
+              roughness: 0.85,
+              metalness: 0.08,
+            })
+          );
+          bldg.position.set(bx, bh / 2 - 0.04, -22.5);
+          bldg.receiveShadow = true;
+          threeScene.add(bldg);
+        }
+
+        // 3D Traffic Signal Gantry (grounded at x = 4.6, z = 5.6)
+        const signalGroup = new THREE.Group();
+        signalGroup.position.set(STOP_LINE_X + 0.6, 0, 5.6);
+
+        const basePlinth = new THREE.Mesh(
+          new THREE.BoxGeometry(0.9, 0.5, 0.9),
+          new THREE.MeshStandardMaterial({ color: 0x64748b, roughness: 0.88 })
+        );
+        basePlinth.position.y = 0.25;
+        const mainMast = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.22, 5.6, 12), steelMat);
+        mainMast.position.y = 2.8;
+        mainMast.castShadow = !isSoftwareGl;
+        const crossArm = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.14, 6.2, 10), steelMat);
+        crossArm.rotation.x = Math.PI / 2;
+        crossArm.position.set(0, 5.35, -3.0);
+        crossArm.castShadow = !isSoftwareGl;
+
+        // Overhead signal housing facing -X (approaching traffic)
+        const housingMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.45, metalness: 0.55 });
+        const signalBox = new THREE.Mesh(new THREE.BoxGeometry(0.68, 2.35, 0.82), housingMat);
+        signalBox.position.set(0, 4.6, -2.9);
+        signalBox.castShadow = !isSoftwareGl;
+
+        const poleBox = new THREE.Mesh(new THREE.BoxGeometry(0.62, 1.9, 0.65), housingMat);
+        poleBox.position.set(-0.22, 3.1, -0.35);
+
+        const makeLampMat = (hex) =>
+          new THREE.MeshStandardMaterial({
+            color: 0x1e293b,
+            emissive: hex,
+            emissiveIntensity: 0.06,
+            roughness: 0.2,
+            metalness: 0.1,
+          });
+        const lampRedMat = makeLampMat(0xef4444);
+        const lampYellowMat = makeLampMat(0xf59e0b);
+        const lampGreenMat = makeLampMat(0x10b981);
+
+        const bulbGeo = new THREE.SphereGeometry(0.24, 16, 16);
+        const hoodGeo = new THREE.CylinderGeometry(0.27, 0.27, 0.26, 12, 1, true, 0, Math.PI);
+
+        [
+          { mat: lampRedMat, yOvh: 5.32, yPole: 3.68 },
+          { mat: lampYellowMat, yOvh: 4.6, yPole: 3.1 },
+          { mat: lampGreenMat, yOvh: 3.88, yPole: 2.52 },
+        ].forEach((spec) => {
+          const ovhBulb = new THREE.Mesh(bulbGeo, spec.mat);
+          ovhBulb.position.set(-0.34, spec.yOvh, -2.9);
+          ovhBulb.scale.set(0.55, 1, 1);
+          const hood = new THREE.Mesh(hoodGeo, housingMat);
+          hood.rotation.z = Math.PI / 2;
+          hood.rotation.y = Math.PI / 2;
+          hood.position.set(-0.46, spec.yOvh + 0.04, -2.9);
+
+          const poleBulb = new THREE.Mesh(new THREE.SphereGeometry(0.19, 14, 14), spec.mat);
+          poleBulb.position.set(-0.52, spec.yPole, -0.35);
+          poleBulb.scale.set(0.55, 1, 1);
+
+          signalGroup.add(ovhBulb, hood, poleBulb);
+        });
+
+        const signalPointLight = new THREE.PointLight(0x10b981, 0, 14, 1.5);
+        signalPointLight.position.set(-1.1, 4.4, -2.9);
+
+        signalGroup.add(basePlinth, mainMast, crossArm, signalBox, poleBox, signalPointLight);
+        threeScene.add(signalGroup);
+
+        // ============================================================
+        // PROCEDURAL MULTI-PART VEHICLES (THREE.Group, bottom-center grounded)
+        // ============================================================
+        function addContactShadow(group, length, width) {
+          const shadow = new THREE.Mesh(
+            new THREE.PlaneGeometry(length, width),
+            new THREE.MeshBasicMaterial({
+              map: contactShadowTex,
+              transparent: true,
+              depthWrite: false,
+            })
+          );
+          shadow.rotation.x = -Math.PI / 2;
+          shadow.position.y = 0.025;
+          group.add(shadow);
+        }
+
+        function addWheelSet(group, xs, halfTrackZ, radius = 0.34) {
+          const wheels = [];
+          const tireGeo = new THREE.CylinderGeometry(radius, radius, 0.22, 16);
+          tireGeo.rotateX(Math.PI / 2);
+          const rimGeo = new THREE.CylinderGeometry(radius * 0.56, radius * 0.56, 0.24, 12);
+          rimGeo.rotateX(Math.PI / 2);
+          const tireMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.88, metalness: 0.05 });
+          const rimMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.22, metalness: 0.85 });
+
+          xs.forEach((wx) => {
+            [-halfTrackZ, halfTrackZ].forEach((wz) => {
+              const wg = new THREE.Group();
+              wg.position.set(wx, radius, wz);
+              const tire = new THREE.Mesh(tireGeo, tireMat);
+              const rim = new THREE.Mesh(rimGeo, rimMat);
+              tire.castShadow = !isSoftwareGl;
+              wg.add(tire, rim);
+              group.add(wg);
+              wheels.push(wg);
+            });
+          });
+          return wheels;
+        }
+
+        function createNormalCar(bodyColor, isTallHatch) {
+          const g = new THREE.Group();
+          const paintMat = new THREE.MeshPhysicalMaterial({
+            color: bodyColor,
+            roughness: 0.24,
+            metalness: 0.22,
+            clearcoat: 0.85,
+            clearcoatRoughness: 0.14,
+          });
+          const glassMat = new THREE.MeshStandardMaterial({
+            color: 0x1e293b,
+            roughness: 0.08,
+            metalness: 0.45,
+          });
+          const trimMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.78, metalness: 0.1 });
+          const headMat = new THREE.MeshStandardMaterial({
+            color: 0xfef9c3,
+            emissive: 0xfef08a,
+            emissiveIntensity: 0.35,
+            roughness: 0.15,
+          });
+          const brakeMat = new THREE.MeshStandardMaterial({
+            color: 0x991b1b,
+            emissive: 0xef4444,
+            emissiveIntensity: 0.2,
+            roughness: 0.2,
+          });
+
+          const hull = new THREE.Mesh(new THREE.BoxGeometry(3.75, 0.68, 1.72), paintMat);
+          hull.position.set(0, 0.62, 0);
+          hull.castShadow = !isSoftwareGl;
+
+          const cabinLen = isTallHatch ? 2.25 : 1.95;
+          const cabinX = isTallHatch ? -0.35 : -0.15;
+          const cabin = new THREE.Mesh(new THREE.BoxGeometry(cabinLen, 0.62, 1.5), paintMat);
+          cabin.position.set(cabinX, 1.24, 0);
+          cabin.castShadow = !isSoftwareGl;
+
+          const glassStrip = new THREE.Mesh(new THREE.BoxGeometry(cabinLen + 0.06, 0.42, 1.54), glassMat);
+          glassStrip.position.set(cabinX, 1.22, 0);
+
+          const frontBumper = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.26, 1.76), trimMat);
+          frontBumper.position.set(1.88, 0.4, 0);
+          const rearBumper = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.26, 1.76), trimMat);
+          rearBumper.position.set(-1.88, 0.4, 0);
+
+          const headL = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.18, 0.32), headMat);
+          headL.position.set(1.86, 0.66, -0.58);
+          const headR = headL.clone();
+          headR.position.z = 0.58;
+
+          const brakeL = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.18, 0.34), brakeMat);
+          brakeL.position.set(-1.86, 0.68, -0.58);
+          const brakeR = brakeL.clone();
+          brakeR.position.z = 0.58;
+
+          g.add(hull, cabin, glassStrip, frontBumper, rearBumper, headL, headR, brakeL, brakeR);
+          const wheels = addWheelSet(g, [-1.18, 1.18], 0.84, 0.34);
+          addContactShadow(g, 4.4, 2.2);
+
+          return { group: g, wheels, headMat, brakeMat };
+        }
+
+        function createAmbulance() {
+          const g = new THREE.Group();
+          const whiteMat = new THREE.MeshPhysicalMaterial({
+            color: 0xf8fafc,
+            roughness: 0.24,
+            metalness: 0.12,
+            clearcoat: 0.75,
+          });
+          const redMat = new THREE.MeshStandardMaterial({ color: 0xdc2626, roughness: 0.35, metalness: 0.1 });
+          const glassMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.1, metalness: 0.4 });
+          const trimMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.75 });
+          const headMat = new THREE.MeshStandardMaterial({
+            color: 0xfef9c3,
+            emissive: 0xfef08a,
+            emissiveIntensity: 0.8,
+          });
+
+          // Rear medical box + front van cab
+          const rearBox = new THREE.Mesh(new THREE.BoxGeometry(3.25, 1.58, 1.96), whiteMat);
+          rearBox.position.set(-0.68, 1.18, 0);
+          rearBox.castShadow = !isSoftwareGl;
+
+          const cabLower = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.92, 1.88), whiteMat);
+          cabLower.position.set(1.62, 0.82, 0);
+          cabLower.castShadow = !isSoftwareGl;
+
+          const cabUpper = new THREE.Mesh(new THREE.BoxGeometry(1.05, 0.65, 1.82), whiteMat);
+          cabUpper.position.set(1.4, 1.56, 0);
+
+          const windshield = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.54, 1.72), glassMat);
+          windshield.position.set(1.88, 1.48, 0);
+          windshield.rotation.z = -0.22;
+
+          // Red side stripe + 3D medical crosses
+          const stripe = new THREE.Mesh(new THREE.BoxGeometry(4.65, 0.18, 2.0), redMat);
+          stripe.position.set(0.0, 0.88, 0);
+
+          const makeCross = (x, y, z, rotY) => {
+            const c = new THREE.Group();
+            c.position.set(x, y, z);
+            c.rotation.y = rotY;
+            const vBar = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.58, 0.06), redMat);
+            const hBar = new THREE.Mesh(new THREE.BoxGeometry(0.58, 0.16, 0.06), redMat);
+            c.add(vBar, hBar);
+            return c;
+          };
+          g.add(makeCross(-0.68, 1.48, 0.98, 0), makeCross(-0.68, 1.48, -0.98, 0));
+
+          const bumperF = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.28, 1.92), trimMat);
+          bumperF.position.set(2.38, 0.42, 0);
+          const bumperR = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.28, 2.0), trimMat);
+          bumperR.position.set(-2.34, 0.42, 0);
+
+          const headL = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.2, 0.34), headMat);
+          headL.position.set(2.36, 0.72, -0.64);
+          const headR = headL.clone();
+          headR.position.z = 0.64;
+
+          // Alternating Red + Blue Rooftop Siren Bar
+          const sirenRedMat = new THREE.MeshStandardMaterial({
+            color: 0xef4444,
+            emissive: 0xef4444,
+            emissiveIntensity: 0.4,
+          });
+          const sirenBlueMat = new THREE.MeshStandardMaterial({
+            color: 0x3b82f6,
+            emissive: 0x2563eb,
+            emissiveIntensity: 0.4,
+          });
+          const barBase = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.1, 1.45), trimMat);
+          barBase.position.set(1.2, 2.02, 0);
+          const beaconRed = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.22, 0.58), sirenRedMat);
+          beaconRed.position.set(1.2, 2.16, -0.38);
+          const beaconBlue = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.22, 0.58), sirenBlueMat);
+          beaconBlue.position.set(1.2, 2.16, 0.38);
+
+          const sirenLight = new THREE.PointLight(0xef4444, 0, 12, 1.6);
+          sirenLight.position.set(1.2, 2.6, 0);
+
+          g.add(
+            rearBox,
+            cabLower,
+            cabUpper,
+            windshield,
+            stripe,
+            bumperF,
+            bumperR,
+            headL,
+            headR,
+            barBase,
+            beaconRed,
+            beaconBlue,
+            sirenLight
+          );
+          const wheels = addWheelSet(g, [-1.45, 1.62], 0.94, 0.38);
+          addContactShadow(g, 5.3, 2.45);
+
+          return { group: g, wheels, sirenRedMat, sirenBlueMat, sirenLight, headMat };
+        }
+
+        function createPilotCar() {
+          const base = createNormalCar(0xf8fafc, false);
+          const stripe = new THREE.Mesh(
+            new THREE.BoxGeometry(3.65, 0.14, 1.76),
+            new THREE.MeshStandardMaterial({ color: 0x1d4ed8, roughness: 0.35 })
+          );
+          stripe.position.set(0, 0.68, 0);
+          const redMat = new THREE.MeshStandardMaterial({
+            color: 0xef4444,
+            emissive: 0xef4444,
+            emissiveIntensity: 1.5,
+          });
+          const blueMat = new THREE.MeshStandardMaterial({
+            color: 0x3b82f6,
+            emissive: 0x2563eb,
+            emissiveIntensity: 1.5,
+          });
+          const bR = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.18, 0.45), redMat);
+          bR.position.set(-0.1, 1.64, -0.26);
+          const bB = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.18, 0.45), blueMat);
+          bB.position.set(-0.1, 1.64, 0.26);
+          base.group.add(stripe, bR, bB);
+          return { ...base, sirenRedMat: redMat, sirenBlueMat: blueMat };
+        }
+
+        function createBlackVipSuv() {
+          const g = new THREE.Group();
+          const blackPaint = new THREE.MeshPhysicalMaterial({
+            color: 0x090d16,
+            roughness: 0.12,
+            metalness: 0.38,
+            clearcoat: 1.0,
+            clearcoatRoughness: 0.08,
+          });
+          const tintGlass = new THREE.MeshStandardMaterial({ color: 0x020617, roughness: 0.05, metalness: 0.6 });
+          const chromeMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.16, metalness: 0.92 });
+          const headMat = new THREE.MeshStandardMaterial({
+            color: 0xffffff,
+            emissive: 0xe0f2fe,
+            emissiveIntensity: 0.9,
+          });
+
+          const body = new THREE.Mesh(new THREE.BoxGeometry(4.65, 0.88, 1.98), blackPaint);
+          body.position.set(0, 0.78, 0);
+          body.castShadow = !isSoftwareGl;
+
+          const cabin = new THREE.Mesh(new THREE.BoxGeometry(3.05, 0.74, 1.84), blackPaint);
+          cabin.position.set(-0.48, 1.54, 0);
+          cabin.castShadow = !isSoftwareGl;
+
+          const windows = new THREE.Mesh(new THREE.BoxGeometry(3.12, 0.52, 1.88), tintGlass);
+          windows.position.set(-0.48, 1.52, 0);
+
+          const grille = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.46, 1.2), chromeMat);
+          grille.position.set(2.34, 0.74, 0);
+
+          // VIP Fender Flag Pole + Saffron/White/Green Flag
+          const flagPole = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.55, 8), chromeMat);
+          flagPole.position.set(2.05, 1.46, 0.78);
+          const flagCloth = new THREE.Mesh(
+            new THREE.BoxGeometry(0.32, 0.22, 0.03),
+            new THREE.MeshStandardMaterial({ color: 0xf97316, roughness: 0.55 })
+          );
+          flagCloth.position.set(1.9, 1.62, 0.78);
+
+          const headL = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.2, 0.34), headMat);
+          headL.position.set(2.33, 0.84, -0.72);
+          const headR = headL.clone();
+          headR.position.z = 0.72;
+
+          g.add(body, cabin, windows, grille, flagPole, flagCloth, headL, headR);
+          const wheels = addWheelSet(g, [-1.45, 1.45], 0.95, 0.4);
+          addContactShadow(g, 5.2, 2.4);
+          return { group: g, wheels, headMat };
+        }
+
+        function createPoliceJeep() {
+          const g = new THREE.Group();
+          const navyMat = new THREE.MeshStandardMaterial({ color: 0x1e3a8a, roughness: 0.42, metalness: 0.18 });
+          const khakiMat = new THREE.MeshStandardMaterial({ color: 0xd6d3d1, roughness: 0.55 });
+          const trimMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.8 });
+          const glassMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.1, metalness: 0.35 });
+
+          const body = new THREE.Mesh(new THREE.BoxGeometry(3.85, 0.82, 1.84), navyMat);
+          body.position.set(0, 0.78, 0);
+          body.castShadow = !isSoftwareGl;
+
+          const topRoof = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.7, 1.72), khakiMat);
+          topRoof.position.set(-0.55, 1.5, 0);
+          topRoof.castShadow = !isSoftwareGl;
+
+          const windows = new THREE.Mesh(new THREE.BoxGeometry(2.26, 0.48, 1.76), glassMat);
+          windows.position.set(-0.55, 1.48, 0);
+
+          const bullBar = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.44, 1.6), trimMat);
+          bullBar.position.set(1.98, 0.65, 0);
+
+          // Spare tire on rear tailgate
+          const spare = new THREE.Mesh(new THREE.CylinderGeometry(0.36, 0.36, 0.22, 14), trimMat);
+          spare.rotation.z = Math.PI / 2;
+          spare.position.set(-2.0, 0.95, 0);
+
+          const redMat = new THREE.MeshStandardMaterial({
+            color: 0xef4444,
+            emissive: 0xef4444,
+            emissiveIntensity: 1.5,
+          });
+          const blueMat = new THREE.MeshStandardMaterial({
+            color: 0x3b82f6,
+            emissive: 0x2563eb,
+            emissiveIntensity: 1.5,
+          });
+          const bR = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.2, 0.55), redMat);
+          bR.position.set(-0.2, 1.95, -0.32);
+          const bB = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.2, 0.55), blueMat);
+          bB.position.set(-0.2, 1.95, 0.32);
+
+          g.add(body, topRoof, windows, bullBar, spare, bR, bB);
+          const wheels = addWheelSet(g, [-1.25, 1.25], 0.9, 0.4);
+          addContactShadow(g, 4.4, 2.2);
+          return { group: g, wheels, sirenRedMat: redMat, sirenBlueMat: blueMat };
+        }
+
+        // Spawn 5 Normal Traffic Cars on Main Lane (z = +2.3)
+        const normalTrafficSpecs = [
+          { color: 0x2563eb, hatch: false, initX: -2.2 },
+          { color: 0xdc2626, hatch: true, initX: -9.5 },
+          { color: 0x0d9488, hatch: false, initX: -17.0 },
+          { color: 0xf59e0b, hatch: true, initX: -24.5 },
+          { color: 0x64748b, hatch: false, initX: -32.0 },
+        ];
+        const normalTrafficCars = normalTrafficSpecs.map((spec) => {
+          const car = createNormalCar(spec.color, spec.hatch);
+          car.x = spec.initX;
+          car.speed = 0;
+          car.group.position.set(car.x, 0, 2.3);
+          threeScene.add(car.group);
+          return car;
+        });
+
+        // Spawn Ambulance on Priority Lane (z = -2.3)
+        const ambulanceActor = createAmbulance();
+        let ambulanceX = -26;
+        ambulanceActor.group.position.set(ambulanceX, 0, -2.3);
+        ambulanceActor.group.visible = false;
+        threeScene.add(ambulanceActor.group);
+
+        // Spawn 3-Vehicle CM Convoy on Priority Lane (z = -2.3)
+        const pilotCar = createPilotCar();
+        const vipSuv = createBlackVipSuv();
+        const policeJeep = createPoliceJeep();
+        const convoyGroup = new THREE.Group();
+        pilotCar.group.position.set(6.5, 0, 0);
+        vipSuv.group.position.set(0, 0, 0);
+        policeJeep.group.position.set(-6.5, 0, 0);
+        convoyGroup.add(pilotCar.group, vipSuv.group, policeJeep.group);
+        let convoyX = -32;
+        convoyGroup.position.set(convoyX, 0, -2.3);
+        convoyGroup.visible = false;
+        threeScene.add(convoyGroup);
+
+        function reset3DActors() {
+          normalTrafficCars.forEach((car, idx) => {
+            car.x = normalTrafficSpecs[idx].initX;
+            car.speed = 0;
+            car.group.position.set(car.x, 0, 2.3);
+          });
+          ambulanceX = -24;
+          ambulanceActor.group.position.set(ambulanceX, 0, -2.3);
+          convoyX = -32;
+          convoyGroup.position.set(convoyX, 0, -2.3);
+        }
+
+        function cycleCameraAngle() {
+          activeCamPresetIdx = (activeCamPresetIdx + 1) % CAMERA_PRESETS.length;
+          isCameraDamping = true;
+          btnCameraAngle.textContent = `📷 Camera Angle: ${CAMERA_PRESETS[activeCamPresetIdx].name}`;
+        }
+
+        function resizeThreeScene() {
+          const w = threeMount.clientWidth || 640;
+          const h = threeMount.clientHeight || 360;
+          if (w <= 0 || h <= 0) return;
+          threeCamera.aspect = w / h;
+          threeCamera.updateProjectionMatrix();
+          threeRenderer.setSize(w, h);
+        }
+
+        const resizeObs = new ResizeObserver(() => resizeThreeScene());
+        resizeObs.observe(threeMount);
+        resizeThreeScene();
+
+        // ============================================================
+        // 3D ANIMATION LOOP (clock.getDelta() + Software WebGL afterDraw)
+        // ============================================================
+        const clock = new THREE.Clock();
+        let threeFrameId = 0;
+
+        function afterDraw(cb) {
+          const gl = threeRenderer.getContext();
+          if (!gl || !gl.fenceSync) {
+            threeFrameId = window.setTimeout(cb, 80);
+            return;
+          }
+          const sync = gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE, 0);
+          gl.flush();
+          const poll = () => {
+            const state = sync && gl.getSyncParameter(sync, gl.SYNC_STATUS);
+            if (state === gl.UNSIGNALED) {
+              threeFrameId = window.setTimeout(poll, 5);
+            } else {
+              if (sync) gl.deleteSync(sync);
+              threeFrameId = window.setTimeout(cb, 80);
+            }
+          };
+          threeFrameId = window.setTimeout(poll, 5);
+        }
+
+        function update3DScene(delta, elapsed) {
+          const isNight = trafficState.nightMode;
+
+          // Day / Night atmosphere damping
+          const targetSky = isNight ? _skyNight : _skyDay;
+          threeScene.background.lerp(targetSky, 1 - Math.exp(-5 * delta));
+          threeScene.fog.color.copy(threeScene.background);
+          hemiLight.color.lerp(isNight ? _hemiNightSky : _hemiDaySky, 1 - Math.exp(-5 * delta));
+          hemiLight.groundColor.lerp(isNight ? _hemiNightGround : _hemiDayGround, 1 - Math.exp(-5 * delta));
+          sunLight.intensity = THREE.MathUtils.damp(sunLight.intensity, isNight ? 0.32 : 1.55, 5, delta);
+          hemiLight.intensity = THREE.MathUtils.damp(hemiLight.intensity, isNight ? 0.38 : 0.72, 5, delta);
+
+          streetLampGlowMats.forEach((m) => {
+            m.emissiveIntensity = THREE.MathUtils.damp(m.emissiveIntensity, isNight ? 2.2 : 0.0, 6, delta);
+          });
+          streetLampLights.forEach((l) => {
+            l.intensity = THREE.MathUtils.damp(l.intensity, isNight ? 5.5 : 0.0, 6, delta);
+          });
+
+          // Traffic Signal Bulbs
+          const lamp = trafficState.activeLamp;
+          const blinkSkip = Math.sin(elapsed * 8) > 0 ? 1.1 : 0.2;
+          lampRedMat.emissiveIntensity = lamp === "Red" ? 3.2 : 0.06;
+          lampYellowMat.emissiveIntensity =
+            lamp === "Yellow" ? 3.0 : lamp === "YellowSkipped" ? blinkSkip : 0.06;
+          lampGreenMat.emissiveIntensity = lamp === "Green" ? 3.2 : 0.06;
+
+          if (lamp === "Red") {
+            signalPointLight.color.setHex(0xef4444);
+            signalPointLight.intensity = 4.5;
+          } else if (lamp === "Yellow") {
+            signalPointLight.color.setHex(0xf59e0b);
+            signalPointLight.intensity = 4.2;
+          } else if (lamp === "Green") {
+            signalPointLight.color.setHex(0x10b981);
+            signalPointLight.intensity = 4.5;
+          } else {
+            signalPointLight.intensity = 0;
+          }
+
+          // Determine Normal Traffic target behavior
+          // If CM Convoy is active, all normal traffic MUST stop behind the stop line!
+          const forceStopForConvoy = trafficState.cmConvoy || trafficState.finished;
+          let laneAllowed = true;
+          let maxCruise = 9.5;
+          if (forceStopForConvoy || lamp === "Red") {
+            laneAllowed = false;
+            maxCruise = 0;
+          } else if (lamp === "Yellow") {
+            laneAllowed = true;
+            maxCruise = 3.2;
+          } else if (lamp === "none" && trafficState.stepCount === 0) {
+            laneAllowed = false;
+            maxCruise = 0;
+          }
+
+          // Update Normal Traffic Cars (ordered front-to-back along +X so queue never overlaps)
+          const sortedIndices = normalTrafficCars
+            .map((c, idx) => ({ idx, x: c.x }))
+            .sort((a, b) => b.x - a.x);
+
+          for (let k = 0; k < sortedIndices.length; k++) {
+            const c = normalTrafficCars[sortedIndices[k].idx];
+            const ahead = k > 0 ? normalTrafficCars[sortedIndices[k - 1].idx] : null;
+            let desiredSpeed = laneAllowed ? maxCruise : 0;
+
+            // Stop smoothly before stop line when Red / Convoy / Finished
+            const stopGoalX = STOP_LINE_X - 2.3;
+            if (!laneAllowed && c.x <= stopGoalX + 0.6) {
+              const distToStop = stopGoalX - c.x;
+              if (distToStop <= 0.12) {
+                desiredSpeed = 0;
+              } else {
+                desiredSpeed = Math.min(7.0, distToStop * 2.1);
+              }
+            } else if (!laneAllowed && c.x > stopGoalX + 0.6) {
+              // Cars already past stop line clear out of the intersection smoothly
+              desiredSpeed = 9.5;
+            }
+
+            // Maintain safe spacing behind car ahead (unless ahead wrapped far behind)
+            if (ahead && ahead.x > c.x) {
+              const gap = ahead.x - c.x;
+              if (gap < 6.2) {
+                desiredSpeed = Math.min(desiredSpeed, Math.max(0, (gap - 5.1) * 3.0));
+              }
+            }
+
+            c.speed = THREE.MathUtils.damp(c.speed, desiredSpeed, 4.5, delta);
+            c.x += c.speed * delta;
+            if (c.x > 46) {
+              // Wrap behind the furthest-back car
+              let minX = -32;
+              normalTrafficCars.forEach((other) => {
+                if (other !== c && other.x < minX) minX = other.x;
+              });
+              c.x = Math.min(-34, minX - 7.5);
+            }
+            c.group.position.x = c.x;
+            c.wheels.forEach((w) => {
+              w.rotation.z -= (c.speed * delta) / 0.34;
+            });
+            const isBraking = c.speed < 0.6 && !laneAllowed;
+            c.brakeMat.emissiveIntensity = isBraking ? 2.4 : 0.25;
+            c.headMat.emissiveIntensity = isNight ? 2.4 : 0.35;
+          }
+
+          // Ambulance Kinematics (zooms through priority lane even on Red!)
+          if (trafficState.ambulanceMode) {
+            ambulanceActor.group.visible = true;
+            const ambSpeed = 16.5;
+            ambulanceX += ambSpeed * delta;
+            if (ambulanceX > 44) ambulanceX = -34;
+            ambulanceActor.group.position.x = ambulanceX;
+            ambulanceActor.wheels.forEach((w) => {
+              w.rotation.z -= (ambSpeed * delta) / 0.38;
+            });
+            const flash = Math.sin(elapsed * 16) > 0;
+            ambulanceActor.sirenRedMat.emissiveIntensity = flash ? 3.5 : 0.15;
+            ambulanceActor.sirenBlueMat.emissiveIntensity = flash ? 0.15 : 3.5;
+            ambulanceActor.sirenLight.color.setHex(flash ? 0xef4444 : 0x3b82f6);
+            ambulanceActor.sirenLight.intensity = 4.2;
+            ambulanceActor.headMat.emissiveIntensity = isNight ? 2.8 : 0.8;
+          } else {
+            ambulanceActor.group.visible = false;
+            ambulanceActor.sirenLight.intensity = 0;
+          }
+
+          // CM Convoy Kinematics (Pilot Gaadi + Kaali SUV + Police Jeep)
+          if (trafficState.cmConvoy) {
+            convoyGroup.visible = true;
+            const convoySpeed = 11.5;
+            convoyX += convoySpeed * delta;
+            if (convoyX > 48) convoyX = -42;
+            convoyGroup.position.x = convoyX;
+            const flash = Math.sin(elapsed * 14) > 0;
+            [pilotCar, policeJeep].forEach((escort) => {
+              escort.sirenRedMat.emissiveIntensity = flash ? 3.2 : 0.2;
+              escort.sirenBlueMat.emissiveIntensity = flash ? 0.2 : 3.2;
+              escort.wheels.forEach((w) => {
+                w.rotation.z -= (convoySpeed * delta) / 0.38;
+              });
+            });
+            vipSuv.wheels.forEach((w) => {
+              w.rotation.z -= (convoySpeed * delta) / 0.4;
+            });
+            vipSuv.headMat.emissiveIntensity = isNight ? 2.8 : 0.9;
+            pilotCar.headMat.emissiveIntensity = isNight ? 2.4 : 0.5;
+          } else {
+            convoyGroup.visible = false;
+          }
+
+          // Camera Preset Smooth Damping (or dynamic VIP/Ambulance tracking)
+          if (isCameraDamping) {
+            const preset = CAMERA_PRESETS[activeCamPresetIdx];
+            _camTargetPos.copy(preset.pos);
+            _camLookTarget.copy(preset.target);
+            if (activeCamPresetIdx === 3) {
+              const trackX = trafficState.cmConvoy
+                ? convoyX
+                : trafficState.ambulanceMode
+                ? ambulanceX
+                : normalTrafficCars[0].x;
+              const clampedX = THREE.MathUtils.clamp(trackX, -18, 18);
+              _camTargetPos.set(clampedX - 8.5, 4.0, -9.8);
+              _camLookTarget.set(clampedX + 1.5, 1.0, trafficState.cmConvoy || trafficState.ambulanceMode ? -2.3 : 1.0);
+            }
+            threeCamera.position.x = THREE.MathUtils.damp(threeCamera.position.x, _camTargetPos.x, 4.5, delta);
+            threeCamera.position.y = THREE.MathUtils.damp(threeCamera.position.y, _camTargetPos.y, 4.5, delta);
+            threeCamera.position.z = THREE.MathUtils.damp(threeCamera.position.z, _camTargetPos.z, 4.5, delta);
+            orbitControls.target.x = THREE.MathUtils.damp(orbitControls.target.x, _camLookTarget.x, 4.5, delta);
+            orbitControls.target.y = THREE.MathUtils.damp(orbitControls.target.y, _camLookTarget.y, 4.5, delta);
+            orbitControls.target.z = THREE.MathUtils.damp(orbitControls.target.z, _camLookTarget.z, 4.5, delta);
+
+            if (activeCamPresetIdx !== 3 && threeCamera.position.distanceTo(_camTargetPos) < 0.05) {
+              isCameraDamping = false;
+            }
+          }
+          orbitControls.update();
+        }
+
+        function tick3D() {
+          const delta = Math.min(clock.getDelta(), 0.1);
+          const elapsed = clock.getElapsedTime();
+          if (activeTab === "traffic") {
+            update3DScene(delta, elapsed);
+            threeRenderer.render(threeScene, threeCamera);
+          }
+          if (isSoftwareGl) {
+            afterDraw(tick3D);
+          } else {
+            threeFrameId = requestAnimationFrame(tick3D);
+          }
+        }
+        tick3D();
+
+        // ============================================================
+        // 6. TAB 1 SIMULATION STEPS & RENDERING
+        // ============================================================
+        function resetTraffic() {
+          stopAutoPlay();
+          trafficHistory = [];
+          trafficState.stepCount = 0;
+          trafficState.iteration = 0;
+          trafficState.pc = "loopHeader";
+          trafficState.i = trafficConfig.forLoopMode ? 0 : trafficConfig.initI;
+          trafficState.light = "-";
+          trafficState.ambulanceMode = false;
+          trafficState.cmConvoy = false;
+          trafficState.breakNow = false;
+          trafficState.finished = false;
+          trafficState.skippedJustNow = false;
+          trafficState.skippedFromLine = null;
+          trafficState.activeLamp = "none";
+          trafficState.carBehavior = "parked";
+          trafficState.outputs = [];
+          trafficState.explanation = trafficConfig.forLoopMode
+            ? `for i in range(${trafficConfig.forCount}) taiyar hai! "Next Step" ya "Auto Play" dabao.`
+            : 'while True 3D loop taiyar hai! "Next Step" dabao, ya Ambulance / CM Convoy try karo.';
+          maxTrafficStepXp = 0;
+          reset3DActors();
+          if (quizMode) refreshQuizQuestion();
+          renderCurrentTab();
+        }
+
+        function executeTrafficStepOnState(st, opts) {
+          const silent = opts && opts.silent;
+          if (st.finished) return null;
+
+          st.stepCount += 1;
+          st.skippedJustNow = false;
+          st.skippedFromLine = null;
+          let printedText = null;
+          const pc = st.pc;
+
+          switch (pc) {
+            case "loopHeader":
+              if (trafficConfig.forLoopMode) {
+                if (st.iteration < trafficConfig.forCount) {
+                  st.i = st.iteration;
+                  st.iteration += 1;
+                  st.pc = "pickLight";
+                  st.explanation = `Chakkar #${st.iteration} (for loop): i = ${st.i} mila (range(${trafficConfig.forCount})).`;
+                } else {
+                  st.activeLamp = "none";
+                  st.carBehavior = "parked";
+                  st.pc = "printDone";
+                  st.explanation = `for loop ke saare ${trafficConfig.forCount} chakkar poore ho gaye — ab loop ke baad waali line chalegi.`;
+                }
+              } else {
+                st.iteration += 1;
+                st.pc = "pickLight";
+                st.explanation = `Chakkar #${st.iteration}: while True hamesha True hota hai — loop ke andar jaa rahe hain.`;
+              }
+              break;
+
+            case "pickLight": {
+              const rawIdx = evaluateSafeIntExpr(trafficConfig.indexExpr, {
+                i: st.i,
+                lightsLen: trafficConfig.lights.length,
+              });
+              const safeIdx =
+                ((rawIdx % trafficConfig.lights.length) + trafficConfig.lights.length) %
+                trafficConfig.lights.length;
+              st.light = trafficConfig.lights[safeIdx];
+              st.activeLamp = st.light;
+              st.pc = trafficConfig.forLoopMode ? "ifNight" : "incI";
+              st.explanation = `lights[${trafficConfig.indexExpr}] = lights[${safeIdx}] -> "${st.light}" signal chuna gaya.`;
+              if (!silent) playSignalSound(st.light);
+              break;
+            }
+
+            case "incI":
+              st.i += trafficConfig.stepInc;
+              st.pc = "ifNight";
+              st.explanation = `Counter badh kar i = ${st.i} ho gaya.`;
+              break;
+
+            case "ifNight":
+              if (st.nightMode && st.light === trafficConfig.skipLight) {
+                st.pc = "continueLine";
+                st.explanation = `Night Mode ON hai aur light "${trafficConfig.skipLight}" hai — condition True! Ab continue chalega.`;
+              } else {
+                st.pc = "ifAmbulance";
+                st.explanation = st.nightMode
+                  ? `Night Mode ON hai par light "${st.light}" hai — Yellow skip nahi hoga.`
+                  : "Night Mode OFF hai — agla check Ambulance ka hai.";
+              }
+              break;
+
+            case "continueLine":
+              st.activeLamp = "YellowSkipped";
+              st.skippedJustNow = true;
+              st.skippedFromLine = "night";
+              st.pc = "loopHeader";
+              st.explanation = `continue chala! "${trafficConfig.skipLight}" skip hua — neeche ki saari lines grey (Skipped) ho gayin aur loop top par gaya.`;
+              if (!silent) playSignalSound("YellowSkipped");
+              break;
+
+            case "ifAmbulance":
+              if (st.ambulanceMode) {
+                st.pc = "ambPrint";
+                st.explanation =
+                  st.light === "Red"
+                    ? "Ambulance aa gayi! Signal RED hone ke baad bhi priority lane se nikalegi — print & continue!"
+                    : "Ambulance aa gayi (ambulance_aayi = True)! Signal skip karke priority lane se nikalegi.";
+                if (!silent) playSirenBurst();
+              } else {
+                st.pc = "ifBreak";
+                st.explanation = "ambulance_aayi abhi False hai — agla check CM Convoy / break ka hai.";
+              }
+              break;
+
+            case "ambPrint":
+              printedText = "AMBULANCE: Siren ke saath Red light par bhi nikal gayi!";
+              st.outputs.push(printedText);
+              st.pc = "ambContinue";
+              st.explanation =
+                "Ambulance siren bajate hue aage badhi — ab 'continue' highlight hoga aur normal traffic wait lines skip hongi!";
+              if (!silent) playSirenBurst();
+              break;
+
+            case "ambContinue":
+              st.skippedJustNow = true;
+              st.skippedFromLine = "ambulance";
+              st.pc = "loopHeader";
+              st.explanation =
+                "continue chala! Neeche ki saari normal traffic lines grey (Skipped) ho gayin — Ambulance signal par nahi ruki!";
+              if (!silent) playSignalSound("YellowSkipped");
+              break;
+
+            case "ifBreak":
+              if (st.cmConvoy || st.breakNow) {
+                st.pc = "breakLine";
+                st.explanation = st.cmConvoy
+                  ? "CM Convoy aaya (Pilot + Kaali SUV + Police Jeep)! Baaki traffic ruk gaya — ab 'break' chalega."
+                  : "Break Now ON hai (break_now = True)! Ab loop todne ke liye break chalega.";
+              } else {
+                st.pc = "ifGreen";
+                st.explanation =
+                  "Na CM Convoy hai na Break Now — isliye loop chalta rahega, light check karte hain.";
+              }
+              break;
+
+            case "breakLine":
+              st.activeLamp = "none";
+              st.carBehavior = "stopped";
+              st.pc = "printDone";
+              st.explanation = st.cmConvoy
+                ? "break chal gaya! CM Convoy ke liye baaki saara traffic ruk gaya aur loop turant toot gaya."
+                : "break chal gaya! Loop turant toot gaya aur bahar aa gaye.";
+              if (!silent) {
+                playSignalSound("Break");
+                if (st.cmConvoy) playConvoyHorn();
+              }
+              break;
+
+            case "ifGreen":
+              if (st.light === "Green") {
+                st.pc = "printGreen";
+                st.explanation = 'light == "Green" True hai — normal traffic ki saari cars chalengi!';
+              } else {
+                st.pc = "elifYellow";
+                st.explanation = `light "${st.light}" hai, Green nahi — elif check karte hain.`;
+              }
+              break;
+
+            case "printGreen":
+              st.carBehavior = "moving";
+              printedText = "GREEN: Normal traffic chal raha hai";
+              st.outputs.push(printedText);
+              st.pc = "loopHeader";
+              st.explanation =
+                "Green light par 3D road par saari normal cars chal rahi hain! Loop wapas top par jayega.";
+              break;
+
+            case "elifYellow":
+              if (st.light === "Yellow") {
+                st.pc = "printYellow";
+                st.explanation = 'light == "Yellow" True hai — normal traffic dheema hoga.';
+              } else {
+                st.pc = "elseRed";
+                st.explanation = "light Yellow bhi nahi hai — ab else (Red) block chalega.";
+              }
+              break;
+
+            case "printYellow":
+              st.carBehavior = "slow";
+              printedText = "YELLOW: Normal traffic slow ho raha hai";
+              st.outputs.push(printedText);
+              st.pc = "loopHeader";
+              st.explanation =
+                "Yellow light par normal traffic slow ho gaya! Loop wapas top par jayega.";
+              break;
+
+            case "elseRed":
+              st.pc = "printRed";
+              st.explanation = "else block mein aa gaye kyunki light Red hai.";
+              break;
+
+            case "printRed":
+              st.carBehavior = "stopped";
+              printedText = "RED: Normal traffic ruk gaya";
+              st.outputs.push(printedText);
+              st.pc = "loopHeader";
+              st.explanation =
+                "Red light par saari normal cars stop line ke peeche ruk gayin! (Ambulance ho toh woh phir bhi nikal jayegi).";
+              break;
+
+            case "printDone":
+              printedText = trafficConfig.forLoopMode
+                ? "Loop band ho gaya! (for / CM Convoy)"
+                : "Loop band ho gaya! (CM Convoy / break)";
+              st.outputs.push(printedText);
+              st.finished = true;
+              st.pc = "done";
+              st.explanation = st.cmConvoy
+                ? "CM Convoy guzarte hi break ke baad ki line print hui! Reset dabakar dubara chalao."
+                : "Loop ke bahar ki line print hui — program safely khatam! Reset dabakar dubara chalao.";
+              break;
+          }
+          return printedText;
+        }
+
+        function stepTraffic(opts) {
+          if (trafficState.finished) {
+            stopAutoPlay();
+            return;
+          }
+          const snap = cloneTrafficState(trafficState);
+          const prevOutputsLen = trafficState.outputs.length;
+          const printedText = executeTrafficStepOnState(trafficState, opts);
+          let addedId = null;
+          if (printedText !== null && !(opts && opts.silent)) {
+            addedId = addGlobalOutput("Tab 1", trafficState.stepCount, printedText);
+          }
+          snap.addedGlobalOutputId = addedId;
+          trafficHistory.push(snap);
+
+          if (trafficState.stepCount > maxTrafficStepXp) {
+            maxTrafficStepXp = trafficState.stepCount;
+            addXp(trafficState.finished ? 15 : trafficState.outputs.length > prevOutputsLen ? 10 : 5);
+          }
+          if (trafficState.finished) {
+            stopAutoPlay();
+          }
+          if (!(opts && opts.skipRender)) {
+            if (quizMode && !(opts && opts.keepQuiz)) refreshQuizQuestion();
+            renderCurrentTab();
+          }
+        }
+
+        function stepBackTraffic() {
+          if (trafficHistory.length === 0) return;
+          stopAutoPlay();
+          const prev = trafficHistory.pop();
+          removeGlobalOutputById(prev.addedGlobalOutputId);
+          delete prev.addedGlobalOutputId;
+          Object.assign(trafficState, prev);
+          if (quizMode) refreshQuizQuestion();
+          renderCurrentTab();
+        }
+
+        function renderTrafficTab() {
+          btnNightToggle.setAttribute("aria-pressed", String(trafficState.nightMode));
+          nightToggleLabel.textContent = trafficState.nightMode ? "Night Mode: ON" : "Night Mode: OFF";
+
+          btnAmbulanceToggle.setAttribute("aria-pressed", String(trafficState.ambulanceMode));
+          ambulanceToggleLabel.textContent = trafficState.ambulanceMode
+            ? "Ambulance: ON"
+            : "Ambulance: OFF";
+
+          btnConvoyToggle.setAttribute("aria-pressed", String(trafficState.cmConvoy));
+          convoyToggleLabel.textContent = trafficState.cmConvoy ? "CM Convoy: ON" : "CM Convoy: OFF";
+          btnConvoyToggle.disabled = trafficState.finished;
+
+          btnBreakToggle.setAttribute("aria-pressed", String(trafficState.breakNow));
+          breakToggleLabel.textContent = trafficState.breakNow ? "Break Now: ON" : "Break Now: OFF";
+          btnBreakToggle.disabled = trafficState.finished;
+
+          btnForToggle.setAttribute("aria-pressed", String(trafficConfig.forLoopMode));
+          forToggleLabel.textContent = trafficConfig.forLoopMode
+            ? "for loop Mode: ON"
+            : "for loop Mode: OFF";
+
+          roadStage.classList.toggle("night", trafficState.nightMode);
+
+          const loopLabel = trafficState.finished
+            ? "Ruka (break)"
+            : trafficState.cmConvoy
+            ? "CM Convoy VIP"
+            : trafficState.ambulanceMode
+            ? "Ambulance Siren"
+            : trafficState.breakNow
+            ? "Break Taiyar"
+            : trafficState.stepCount === 0
+            ? "Loop Taiyar"
+            : trafficConfig.forLoopMode
+            ? `for Chakkar #${trafficState.iteration}/${trafficConfig.forCount}`
+            : `Chakkar #${trafficState.iteration}`;
+          trafficModeLabel.textContent = `${
+            trafficState.nightMode ? "Raat Mode (Night)" : "Din Mode"
+          } · ${loopLabel}`;
+
+          if (trafficState.cmConvoy) {
+            stageStatusTag.textContent = "VIP: CM Convoy Guzar Raha Hai";
+            signalLabelBox.textContent = trafficState.finished
+              ? "BREAK — Traffic Ruka"
+              : "CM CONVOY — Baaki Ruko";
+          } else if (trafficState.activeLamp === "Red") {
+            stageStatusTag.textContent = trafficState.ambulanceMode
+              ? "Signal: RED · Ambulance Bypass!"
+              : "Signal: RED (Ruko)";
+            signalLabelBox.textContent = "RED — Ruk Jao";
+          } else if (trafficState.activeLamp === "Yellow") {
+            stageStatusTag.textContent = "Signal: YELLOW (Slow)";
+            signalLabelBox.textContent = "YELLOW — Dheere";
+          } else if (trafficState.activeLamp === "YellowSkipped") {
+            stageStatusTag.textContent = `${trafficConfig.skipLight} Skip (continue)`;
+            signalLabelBox.textContent = "SKIPPED (continue)";
+          } else if (trafficState.activeLamp === "Green") {
+            stageStatusTag.textContent = "Signal: GREEN (Chalo)";
+            signalLabelBox.textContent = "GREEN — Chalo";
+          } else if (trafficState.finished) {
+            stageStatusTag.textContent = "Signal: OFF (Band)";
+            signalLabelBox.textContent = "BAND";
+          } else {
+            stageStatusTag.textContent = "Signal: Taiyar";
+            signalLabelBox.textContent = "Taiyar";
+          }
+
+          if (trafficState.cmConvoy) {
+            carStateCaption.textContent =
+              "CM Convoy (Pilot + Kaali SUV + Police Jeep) aaya — baaki sab traffic ruk gaya (break)!";
+          } else if (trafficState.ambulanceMode && trafficState.activeLamp === "Red") {
+            carStateCaption.textContent =
+              "Red light par normal cars ruki hain · Ambulance siren ke saath nikal rahi hai (continue)!";
+          } else if (trafficState.ambulanceMode) {
+            carStateCaption.textContent =
+              "Ambulance priority lane par siren ke saath daud rahi hai (continue)!";
+          } else if (trafficState.activeLamp === "Green") {
+            carStateCaption.textContent = "Green light par saari normal traffic cars chal rahi hain";
+          } else if (trafficState.activeLamp === "Yellow") {
+            carStateCaption.textContent = "Yellow light par normal traffic cars slow ho rahi hain";
+          } else if (trafficState.activeLamp === "Red") {
+            carStateCaption.textContent = "Red light par sab normal cars stop line ke peeche ruk gayin";
+          } else if (trafficState.activeLamp === "YellowSkipped") {
+            carStateCaption.textContent = `${trafficConfig.skipLight} skip hua (continue) — agla signal aayega`;
+          } else {
+            carStateCaption.textContent =
+              trafficState.finished || trafficState.pc === "printDone"
+                ? "Traffic loop khatam hone par normal cars ruk gayin"
+                : "Traffic: Start hone ka intezaar";
+          }
+
+          if (!isEditingCode) {
+            const spec = buildTrafficCodeSpec(trafficConfig);
+            const activeIdx = spec.map[trafficState.pc] ?? -1;
+            const skipped = [];
+            if (trafficState.skippedJustNow) {
+              const startSkipIdx =
+                trafficState.skippedFromLine === "ambulance"
+                  ? spec.map.ambContinue + 1
+                  : spec.map.continueLine + 1;
+              for (let idx = startSkipIdx; idx < spec.map.printDone; idx++) {
+                skipped.push(idx);
+              }
+            }
+            renderCodeLines(spec.lines, activeIdx, skipped);
+          }
+
+          renderState([
+            [
+              "Iteration (Chakkar)",
+              trafficConfig.forLoopMode
+                ? `${trafficState.iteration} / ${trafficConfig.forCount}`
+                : trafficState.iteration,
+            ],
+            ["light", trafficState.light === "-" ? '"-"' : `"${trafficState.light}"`],
+            ["night_mode", trafficState.nightMode ? "True" : "False"],
+            ["ambulance_aayi", trafficState.ambulanceMode ? "True" : "False"],
+            ["cm_convoy", trafficState.cmConvoy ? "True" : "False"],
+            ["break_now", trafficState.breakNow ? "True" : "False"],
+          ]);
+          renderConsole();
+          stepCounter.textContent = `Step ${trafficState.stepCount} · Chakkar #${trafficState.iteration}`;
+          explanationText.textContent = trafficState.explanation;
+
+          btnBack.disabled = trafficHistory.length === 0;
+          btnNext.disabled = trafficState.finished;
+          btnPlay.disabled = trafficState.finished;
+          btnResetCode.classList.toggle("hidden", !trafficConfig.customEdited);
+        }
+
+        // ============================================================
+        // 7. TAB 2: NUMBER DEMO (for i in range(...))
+        // ============================================================
+        const DEFAULT_NUMBER_CONFIG = {
+          rangeStart: 1,
+          rangeStop: 8,
+          rangeStep: 1,
+          condExprByMode: {
+            break: "i == 5",
+            continue: "i == 3",
+            pass: "i == 3",
+          },
+          customEdited: false,
+        };
+
+        let numberConfig = {
+          rangeStart: 1,
+          rangeStop: 8,
+          rangeStep: 1,
+          condExprByMode: { ...DEFAULT_NUMBER_CONFIG.condExprByMode },
+          customEdited: false,
+        };
+
+        function getNumberSequence(cfg) {
+          const seq = [];
+          const step = cfg.rangeStep || 1;
+          if (step > 0) {
+            for (let v = cfg.rangeStart; v < cfg.rangeStop && seq.length < 12; v += step) {
+              seq.push(v);
+            }
+          } else if (step < 0) {
+            for (let v = cfg.rangeStart; v > cfg.rangeStop && seq.length < 12; v += step) {
+              seq.push(v);
+            }
+          }
+          return seq.length > 0 ? seq : [1, 2, 3, 4, 5, 6, 7];
+        }
+
+        function buildNumberCodeLines(mode, cfg) {
+          const rangeText =
+            cfg.rangeStep === 1
+              ? `range(${cfg.rangeStart}, ${cfg.rangeStop})`
+              : `range(${cfg.rangeStart}, ${cfg.rangeStop}, ${cfg.rangeStep})`;
+          const cond = cfg.condExprByMode[mode];
+          return [
+            `for i in ${rangeText}:`,
+            `    if ${cond}:`,
+            `        ${mode}`,
+            "    print(i)",
+            'print("Loop khatam!")',
+          ];
+        }
+
+        function evalNumberCondition(expr, iVal) {
+          const modMatch = expr.match(/^\s*i\s*%\s*(-?\d+)\s*==\s*(-?\d+)\s*$/);
+          if (modMatch) {
+            const d = parseInt(modMatch[1], 10);
+            const r = parseInt(modMatch[2], 10);
+            if (d === 0) return false;
+            return ((iVal % d) + d) % d === r;
+          }
+          const cmpMatch = expr.match(/^\s*i\s*(==|!=|>=|<=|>|<)\s*(-?\d+)\s*$/);
+          if (cmpMatch) {
+            const op = cmpMatch[1];
+            const n = parseInt(cmpMatch[2], 10);
+            if (op === "==") return iVal === n;
+            if (op === "!=") return iVal !== n;
+            if (op === ">") return iVal > n;
+            if (op === "<") return iVal < n;
+            if (op === ">=") return iVal >= n;
+            if (op === "<=") return iVal <= n;
+          }
+          return false;
+        }
+
+        const numberState = {
+          mode: "break",
+          stepCount: 0,
+          iteration: 0,
+          pc: 0,
+          i: null,
+          seqIdx: 0,
+          finished: false,
+          skippedJustNow: false,
+          boxStates: {},
+          passVisited: {},
+          outputs: [],
+          explanation: 'Statement chuno aur "Next Step" ya "Auto Play" dabao.',
+        };
+
+        let numberHistory = [];
+
+        function cloneNumberState(st) {
+          return {
+            mode: st.mode,
+            stepCount: st.stepCount,
+            iteration: st.iteration,
+            pc: st.pc,
+            i: st.i,
+            seqIdx: st.seqIdx,
+            finished: st.finished,
+            skippedJustNow: st.skippedJustNow,
+            boxStates: { ...st.boxStates },
+            passVisited: { ...st.passVisited },
+            outputs: [...st.outputs],
+            explanation: st.explanation,
+          };
+        }
+
+        function initBoxStates(seq) {
+          const map = {};
+          seq.forEach((v) => {
+            map[v] = "waiting";
+          });
+          return map;
+        }
+
+        function resetNumbers() {
+          stopAutoPlay();
+          numberHistory = [];
+          const seq = getNumberSequence(numberConfig);
+          numberState.stepCount = 0;
+          numberState.iteration = 0;
+          numberState.pc = 0;
+          numberState.i = null;
+          numberState.seqIdx = 0;
+          numberState.finished = false;
+          numberState.skippedJustNow = false;
+          numberState.boxStates = initBoxStates(seq);
+          numberState.passVisited = {};
+          numberState.outputs = [];
+          numberState.explanation = `for loop (${numberState.mode} demo) taiyar hai — "Next Step" dabao.`;
+          maxNumberStepXp = 0;
+          if (quizMode) refreshQuizQuestion();
+          renderCurrentTab();
+        }
+
+        function executeNumberStepOnState(st) {
+          if (st.finished) return null;
+          const seq = getNumberSequence(numberConfig);
+          const mode = st.mode;
+          const condExpr = numberConfig.condExprByMode[mode];
+          st.stepCount += 1;
+          st.skippedJustNow = false;
+          let printedText = null;
+          const pc = st.pc;
+
+          if (pc === 0) {
+            if (st.seqIdx < seq.length) {
+              st.i = seq[st.seqIdx];
+              st.seqIdx += 1;
+              st.iteration += 1;
+              st.boxStates[st.i] = "current";
+              st.pc = 1;
+              st.explanation = `Chakkar #${st.iteration}: i = ${st.i} mila.`;
+            } else {
+              st.pc = 4;
+              st.explanation = "Saare numbers poore ho gaye — ab loop ke baad waali line chalegi.";
+            }
+          } else if (pc === 1) {
+            if (evalNumberCondition(condExpr, st.i)) {
+              st.pc = 2;
+              st.explanation = `Condition True: "${condExpr}" (i = ${st.i}) sach hai! Ab "${mode}" chalega.`;
+            } else {
+              st.pc = 3;
+              st.explanation = `Condition False: "${condExpr}" (i = ${st.i}) galat hai, seedha print(i) par jayenge.`;
+            }
+          } else if (pc === 2) {
+            if (mode === "break") {
+              st.boxStates[st.i] = "broken";
+              for (let k = st.seqIdx; k < seq.length; k++) {
+                st.boxStates[seq[k]] = "never-run";
+              }
+              st.pc = 4;
+              st.explanation = `break chala! Loop ${st.i} par toot gaya — baaki numbers kabhi nahi chalenge (Never Run).`;
+            } else if (mode === "continue") {
+              st.boxStates[st.i] = "skipped";
+              st.skippedJustNow = true;
+              st.pc = 0;
+              st.explanation = `continue chala! ${st.i} par neeche wali print(i) line grey (Skipped) ho gayi aur loop agle number par chala gaya.`;
+            } else {
+              st.passVisited[st.i] = true;
+              st.pc = 3;
+              st.explanation = `pass chala — ye kuch nahi karta (khaali placeholder)! Ab neeche print(${st.i}) chalega.`;
+            }
+          } else if (pc === 3) {
+            const cur = st.i;
+            st.boxStates[cur] = "printed";
+            printedText = String(cur);
+            st.outputs.push(printedText);
+            st.pc = 0;
+            st.explanation =
+              mode === "pass" && st.passVisited[cur]
+                ? `pass ke baad print(${cur}) bhi chala! Dekho ${cur} print ho gaya (continue se alag).`
+                : `print(${cur}) chala — box ${cur} green (Printed) ho gaya aur console mein ${cur} aaya.`;
+          } else if (pc === 4) {
+            printedText = "Loop khatam!";
+            st.outputs.push(printedText);
+            st.finished = true;
+            st.pc = -1;
+            st.explanation =
+              "Loop khatam! Console mein final output dekho ya doosra statement try karo.";
+          }
+          return printedText;
+        }
+
+        function stepNumbers(opts) {
+          if (numberState.finished) {
+            stopAutoPlay();
+            return;
+          }
+          const snap = cloneNumberState(numberState);
+          const prevOutputsLen = numberState.outputs.length;
+          const printedText = executeNumberStepOnState(numberState);
+          let addedId = null;
+          if (printedText !== null && !(opts && opts.silent)) {
+            addedId = addGlobalOutput("Tab 2", numberState.stepCount, printedText);
+          }
+          snap.addedGlobalOutputId = addedId;
+          numberHistory.push(snap);
+
+          if (numberState.stepCount > maxNumberStepXp) {
+            maxNumberStepXp = numberState.stepCount;
+            addXp(numberState.finished ? 15 : numberState.outputs.length > prevOutputsLen ? 10 : 5);
+          }
+          if (numberState.finished) {
+            stopAutoPlay();
+          }
+          if (!(opts && opts.skipRender)) {
+            if (quizMode && !(opts && opts.keepQuiz)) refreshQuizQuestion();
+            renderCurrentTab();
+          }
+        }
+
+        function stepBackNumbers() {
+          if (numberHistory.length === 0) return;
+          stopAutoPlay();
+          const prev = numberHistory.pop();
+          removeGlobalOutputById(prev.addedGlobalOutputId);
+          delete prev.addedGlobalOutputId;
+          Object.assign(numberState, prev);
+          if (quizMode) refreshQuizQuestion();
+          renderCurrentTab();
+        }
+
+        function getBoxLabel(n, state) {
+          if (state === "current") return "Current";
+          if (state === "printed") {
+            return numberState.mode === "pass" && numberState.passVisited[n]
+              ? "Pass + Printed"
+              : "Printed";
+          }
+          if (state === "skipped") return "Skipped";
+          if (state === "broken") return "Broken";
+          if (state === "never-run") return "Never Run";
+          return "Waiting";
+        }
+
+        function renderNumbersTab() {
+          const seq = getNumberSequence(numberConfig);
+
+          radioCards.forEach((card) => {
+            const isSelected = card.dataset.mode === numberState.mode;
+            card.classList.toggle("selected", isSelected);
+            const titleEl = card.querySelector(".radio-card-title");
+            if (titleEl) {
+              const m = card.dataset.mode;
+              titleEl.textContent = `${m} (${numberConfig.condExprByMode[m]})`;
+            }
+          });
+
+          boxesGrid.style.gridTemplateColumns = `repeat(${Math.min(seq.length, 7)}, minmax(0, 1fr))`;
+
+          boxesGrid.innerHTML = seq
+            .map((n) => {
+              const st = numberState.boxStates[n] || "waiting";
+              return `
+                <div class="num-box state-${st}">
+                  <span class="num-box-val">${n}</span>
+                  <span class="num-box-tag">${getBoxLabel(n, st)}</span>
+                </div>
+              `;
+            })
+            .join("");
+
+          if (!isEditingCode) {
+            const skipped = numberState.skippedJustNow ? [3] : [];
+            renderCodeLines(buildNumberCodeLines(numberState.mode, numberConfig), numberState.pc, skipped);
+          }
+
+          const condExpr = numberConfig.condExprByMode[numberState.mode];
+          const condResult =
+            numberState.i === null
+              ? "-"
+              : evalNumberCondition(condExpr, numberState.i)
+              ? "True"
+              : "False";
+
+          renderState([
+            ["Iteration (Chakkar)", `${numberState.iteration} / ${seq.length}`],
+            ["mode", `"${numberState.mode}"`],
+            ["i", numberState.i === null ? "None" : numberState.i],
+            [condExpr, condResult],
+            ["loop_status", numberState.finished ? "Khatam" : "Chal raha hai"],
+          ]);
+
+          renderConsole();
+          stepCounter.textContent = `Step ${numberState.stepCount} · Chakkar #${numberState.iteration}`;
+          explanationText.textContent = numberState.explanation;
+
+          btnBack.disabled = numberHistory.length === 0;
+          btnNext.disabled = numberState.finished;
+          btnPlay.disabled = numberState.finished;
+          btnResetCode.classList.toggle("hidden", !numberConfig.customEdited);
+        }
+
+        // ============================================================
+        // 8. QUIZ MODE (PREDICT NEXT OUTPUT IN HINGLISH)
+        // ============================================================
+        function buildTrafficQuiz() {
+          if (trafficState.finished) {
+            return { finished: true };
+          }
+          const sim = cloneTrafficState(trafficState);
+          const startLen = sim.outputs.length;
+          let skippedAny = false;
+          let ambRan = false;
+          let guard = 0;
+          while (sim.outputs.length === startLen && !sim.finished && guard < 40) {
+            if (sim.pc === "continueLine") skippedAny = true;
+            if (sim.pc === "ambPrint") ambRan = true;
+            executeTrafficStepOnState(sim, { silent: true });
+            guard++;
+          }
+          const fallbackEnd = trafficConfig.forLoopMode
+            ? "Loop band ho gaya! (for / CM Convoy)"
+            : "Loop band ho gaya! (CM Convoy / break)";
+          const correct = sim.outputs[sim.outputs.length - 1] || fallbackEnd;
+          const allPossible = [
+            "GREEN: Normal traffic chal raha hai",
+            trafficState.ambulanceMode
+              ? "AMBULANCE: Siren ke saath Red light par bhi nikal gayi!"
+              : "YELLOW: Normal traffic slow ho raha hai",
+            "RED: Normal traffic ruk gaya",
+            fallbackEnd,
+          ];
+          if (!allPossible.includes(correct)) {
+            allPossible[1] = correct;
+          }
+
+          const previewI = trafficConfig.forLoopMode
+            ? trafficState.pc === "loopHeader"
+              ? trafficState.iteration
+              : trafficState.i
+            : trafficState.i;
+          const nextLightHint =
+            trafficState.light === "-" || trafficState.pc === "loopHeader" || trafficState.pc === "pickLight"
+              ? trafficConfig.lights[
+                  ((evaluateSafeIntExpr(trafficConfig.indexExpr, {
+                    i: previewI,
+                    lightsLen: trafficConfig.lights.length,
+                  }) %
+                    trafficConfig.lights.length) +
+                    trafficConfig.lights.length) %
+                    trafficConfig.lights.length
+                ]
+              : trafficState.light;
+
+          const question = `Night ${trafficState.nightMode ? "ON" : "OFF"}, Ambulance ${
+            trafficState.ambulanceMode ? "ON" : "OFF"
+          }, CM Convoy ${trafficState.cmConvoy ? "ON" : "OFF"} (Agli light: ${nextLightHint}). Console mein agla output kya print hoga?`;
+
+          let reason = `Sahi output "${correct}" print hua.`;
+          if (trafficState.cmConvoy || correct.includes("band ho gaya")) {
+            reason = "CM Convoy ya Break Now ON hone se 'break' chala aur traffic loop band ho gaya!";
+          } else if (ambRan) {
+            reason =
+              "Ambulance aane par siren ke saath nikal gayi aur 'continue' ne normal signal wait skip kar diya!";
+          } else if (skippedAny) {
+            reason = `Night Mode ON hone se '${trafficConfig.skipLight}' continue se skip hua aur agla output "${correct}" aaya!`;
+          }
+
+          return {
+            finished: false,
+            question,
+            options: allPossible,
+            correctAnswer: correct,
+            reason,
+            answered: false,
+            selectedOption: null,
+          };
+        }
+
+        function buildNumberQuiz() {
+          if (numberState.finished) {
+            return { finished: true };
+          }
+          const sim = cloneNumberState(numberState);
+          const startLen = sim.outputs.length;
+          let skippedVal = null;
+          let brokeVal = null;
+          let passedVal = null;
+          let guard = 0;
+          while (sim.outputs.length === startLen && !sim.finished && guard < 40) {
+            if (sim.pc === 2) {
+              if (sim.mode === "continue") skippedVal = sim.i;
+              if (sim.mode === "break") brokeVal = sim.i;
+              if (sim.mode === "pass") passedVal = sim.i;
+            }
+            executeNumberStepOnState(sim);
+            guard++;
+          }
+          const correct = sim.outputs[sim.outputs.length - 1] || "Loop khatam!";
+          const seq = getNumberSequence(numberConfig);
+          const curVal =
+            numberState.pc === 0 && numberState.seqIdx < seq.length
+              ? seq[numberState.seqIdx]
+              : numberState.i;
+
+          const optionSet = new Set([correct]);
+          if (skippedVal !== null) optionSet.add(String(skippedVal));
+          if (brokeVal !== null) optionSet.add(String(brokeVal));
+          if (curVal !== null && curVal !== undefined) optionSet.add(String(curVal));
+          for (const v of seq) {
+            if (optionSet.size < 3) optionSet.add(String(v));
+          }
+          optionSet.add("Loop khatam!");
+          const options = Array.from(optionSet)
+            .slice(0, 4)
+            .sort((a, b) => {
+              if (a === "Loop khatam!") return 1;
+              if (b === "Loop khatam!") return -1;
+              return Number(a) - Number(b);
+            });
+
+          const question = `Abhi '${numberState.mode}' mode chal raha hai (${
+            curVal !== null ? `next i = ${curVal}` : "loop end par"
+          }). Console mein agla output kya aayega?`;
+
+          let reason = `Agla output "${correct}" print hua.`;
+          if (skippedVal !== null) {
+            reason = `${skippedVal} par 'continue' chala isliye ${skippedVal} skip hua aur seedha "${correct}" print hua!`;
+          } else if (brokeVal !== null) {
+            reason = `${brokeVal} par 'break' chala aur loop wahin ruk gaya, isliye "${correct}" print hua!`;
+          } else if (passedVal !== null) {
+            reason = `${passedVal} par 'pass' ne kuch skip nahi kiya — isliye "${correct}" print hua!`;
+          }
+
+          return {
+            finished: false,
+            question,
+            options,
+            correctAnswer: correct,
+            reason,
+            answered: false,
+            selectedOption: null,
+          };
+        }
+
+        function refreshQuizQuestion() {
+          if (!quizMode) return;
+          currentQuiz = activeTab === "traffic" ? buildTrafficQuiz() : buildNumberQuiz();
+          renderQuiz();
+        }
+
+        function renderQuiz() {
+          quizCard.classList.toggle("hidden", !quizMode);
+          btnQuizToggle.setAttribute("aria-pressed", String(quizMode));
+          quizToggleLabel.textContent = quizMode ? "Quiz Mode: ON" : "Quiz Mode: OFF";
+          if (!quizMode) return;
+
+          quizScoreEl.textContent = `Score: ${quizScoreCorrect} / ${quizScoreTotal}`;
+
+          if (!currentQuiz || currentQuiz.finished) {
+            quizQuestionEl.textContent =
+              "Ye loop poora ho gaya! Naya prediction khelne ke liye Reset dabao ya doosra tab chuno.";
+            quizOptionsEl.innerHTML = "";
+            quizFeedbackEl.classList.add("hidden");
+            return;
+          }
+
+          quizQuestionEl.textContent = currentQuiz.question;
+          quizOptionsEl.innerHTML = currentQuiz.options
+            .map((opt) => {
+              let cls = "quiz-opt-btn";
+              if (currentQuiz.answered) {
+                if (opt === currentQuiz.correctAnswer) cls += " correct";
+                else if (opt === currentQuiz.selectedOption) cls += " wrong";
+              }
+              return `<button class="${cls}" type="button" data-opt="${escapeHtml(opt)}" ${
+                currentQuiz.answered ? "disabled" : ""
+              }>${escapeHtml(opt)}</button>`;
+            })
+            .join("");
+
+          if (currentQuiz.answered) {
+            const isOk = currentQuiz.selectedOption === currentQuiz.correctAnswer;
+            quizFeedbackEl.className = `quiz-feedback ${isOk ? "ok" : "bad"}`;
+            quizFeedbackEl.innerHTML = `
+              <span>${isOk ? "Sahi Jawab! (+25 XP)" : "Galat Jawab!"} — ${escapeHtml(
+              currentQuiz.reason
+            )}</span>
+              <button id="btn-quiz-next" class="btn-mini active" type="button">Agla Sawal →</button>
+            `;
+            const nextQuizBtn = document.getElementById("btn-quiz-next");
+            if (nextQuizBtn) {
+              nextQuizBtn.addEventListener("click", () => {
+                refreshQuizQuestion();
+              });
+            }
+          } else {
+            quizFeedbackEl.classList.add("hidden");
+          }
+        }
+
+        function handleQuizAnswer(selected) {
+          if (!currentQuiz || currentQuiz.answered || currentQuiz.finished) return;
+          stopAutoPlay();
+          currentQuiz.answered = true;
+          currentQuiz.selectedOption = selected;
+          quizScoreTotal += 1;
+
+          if (selected === currentQuiz.correctAnswer) {
+            quizScoreCorrect += 1;
+            addXp(25);
+          }
+
+          if (activeTab === "traffic") {
+            const startLen = trafficState.outputs.length;
+            let guard = 0;
+            while (trafficState.outputs.length === startLen && !trafficState.finished && guard < 40) {
+              stepTraffic({ skipRender: true, keepQuiz: true });
+              guard++;
+            }
+          } else {
+            const startLen = numberState.outputs.length;
+            let guard = 0;
+            while (numberState.outputs.length === startLen && !numberState.finished && guard < 40) {
+              stepNumbers({ skipRender: true, keepQuiz: true });
+              guard++;
+            }
+          }
+
+          renderCurrentTab();
+          renderQuiz();
+        }
+
+        // ============================================================
+        // 9. EDITABLE CODE BOX CONTROLLER
+        // ============================================================
+        function openCodeEditor() {
+          stopAutoPlay();
+          isEditingCode = true;
+          codeEditorError.classList.add("hidden");
+          codeBlock.classList.add("hidden");
+          codeEditorWrap.classList.remove("hidden");
+          btnEditCode.textContent = "View Mode";
+
+          if (activeTab === "traffic") {
+            codeEditor.value = buildTrafficCodeSpec(trafficConfig).lines.join("\n");
+            codeEditorHint.textContent = trafficConfig.forLoopMode
+              ? 'Tip: range(6), lights[i % 3] (jaise i % 2 ya (i + 1) % 3), ya "Yellow" badal kar dekho!'
+              : 'Tip: i = 0, lights[i % 3] (jaise i % 2 ya (i + 1) % 3), i = i + 1, ya "Yellow" badal kar dekho!';
+          } else {
+            codeEditor.value = buildNumberCodeLines(numberState.mode, numberConfig).join("\n");
+            codeEditorHint.textContent =
+              "Tip: range(1, 8) (jaise range(1, 10) ya range(2, 12, 2)) aur if i == 5 / i % 2 == 0 badal sakte ho!";
+          }
+          codeEditor.focus();
+        }
+
+        function closeCodeEditor() {
+          isEditingCode = false;
+          codeEditorWrap.classList.add("hidden");
+          codeBlock.classList.remove("hidden");
+          btnEditCode.textContent = "Code Edit Karo";
+          renderCurrentTab();
+        }
+
+        function showCodeEditError(msg) {
+          codeEditorError.textContent = msg;
+          codeEditorError.classList.remove("hidden");
+        }
+
+        function applyEditedCode() {
+          const raw = codeEditor.value;
+          const lines = raw.split(/\r?\n/);
+
+          if (activeTab === "traffic") {
+            let initI = trafficConfig.initI;
+            let indexExpr = trafficConfig.indexExpr;
+            let stepInc = trafficConfig.stepInc;
+            let skipLight = trafficConfig.skipLight;
+            let forCount = trafficConfig.forCount;
+            let lights = [...trafficConfig.lights];
+
+            const lightsLine = lines.find((l) => /^\s*lights\s*=/.test(l));
+            if (lightsLine) {
+              const matches = [...lightsLine.matchAll(/"(Green|Yellow|Red)"|'(Green|Yellow|Red)'/g)];
+              if (matches.length >= 2 && matches.length <= 6) {
+                lights = matches.map((m) => m[1] || m[2]);
+              } else {
+                showCodeEditError(
+                  'lights list mein 2 se 6 colors rakho: "Green", "Yellow", "Red".'
+                );
+                return;
+              }
+            }
+
+            if (trafficConfig.forLoopMode) {
+              const forLine = lines.find((l) => /for\s+i\s+in\s+range\((\d+)\)\s*:/.test(l));
+              if (forLine) {
+                const cnt = parseInt(forLine.match(/range\((\d+)\)/)[1], 10);
+                if (cnt < 1 || cnt > 12) {
+                  showCodeEditError("for range(...) mein 1 se 12 ke beech number rakho.");
+                  return;
+                }
+                forCount = cnt;
+              } else {
+                showCodeEditError("Line 'for i in range(6):' jaisi honi chahiye.");
+                return;
+              }
+            } else {
+              const iInitLine = lines.find((l) => /^\s*i\s*=\s*-?\d+\s*$/.test(l));
+              if (iInitLine) {
+                initI = parseInt(iInitLine.match(/-?\d+/)[0], 10);
+              } else {
+                showCodeEditError("Line 2 par 'i = 0' jaisa integer start hona chahiye.");
+                return;
+              }
+
+              const incLine = lines.find(
+                (l) => /^\s*i\s*=\s*i\s*\+\s*(\d+)\s*$/.test(l) || /^\s*i\s*\+=\s*(\d+)\s*$/.test(l)
+              );
+              if (incLine) {
+                const m = incLine.match(/(\d+)\s*$/);
+                const val = parseInt(m[1], 10);
+                if (val < 1 || val > 5) {
+                  showCodeEditError("i ka step increment 1 se 5 ke beech rakho.");
+                  return;
+                }
+                stepInc = val;
+              }
+            }
+
+            const lightIdxLine = lines.find((l) => /^\s*light\s*=\s*lights\[(.+)\]\s*$/.test(l));
+            if (lightIdxLine) {
+              const expr = lightIdxLine.match(/lights\[(.+)\]/)[1].trim();
+              try {
+                evaluateSafeIntExpr(expr, { i: initI, lightsLen: lights.length });
+                indexExpr = expr;
+              } catch (err) {
+                showCodeEditError(`lights[...] expression samajh nahi aaya: ${err.message}`);
+                return;
+              }
+            } else {
+              showCodeEditError("Line 'light = lights[i % 3]' jaisi honi chahiye.");
+              return;
+            }
+
+            const skipLine = lines.find((l) =>
+              /night_mode\s+and\s+light\s*==\s*["'](Green|Yellow|Red)["']/.test(l)
+            );
+            if (skipLine) {
+              skipLight = skipLine.match(/["'](Green|Yellow|Red)["']/)[1];
+            }
+
+            trafficConfig = {
+              lights,
+              initI,
+              indexExpr,
+              stepInc,
+              skipLight,
+              forLoopMode: trafficConfig.forLoopMode,
+              forCount,
+              customEdited: true,
+            };
+            isEditingCode = false;
+            codeEditorWrap.classList.add("hidden");
+            codeBlock.classList.remove("hidden");
+            btnEditCode.textContent = "Code Edit Karo";
+            resetTraffic();
+            trafficState.explanation =
+              "Naya code apply ho gaya! Ab Next Step dabakar apna custom loop dekho.";
+            renderCurrentTab();
+          } else {
+            const rangeLine = lines.find((l) => /for\s+i\s+in\s+range\(([^)]+)\)\s*:/.test(l));
+            if (!rangeLine) {
+              showCodeEditError("Line 1 par 'for i in range(1, 8):' jaisa syntax rakho.");
+              return;
+            }
+            const args = rangeLine
+              .match(/range\(([^)]+)\)/)[1]
+              .split(",")
+              .map((s) => s.trim())
+              .filter(Boolean);
+            if (args.length < 2 || args.length > 3 || args.some((a) => !/^-?\d+$/.test(a))) {
+              showCodeEditError("range(start, stop) ya range(start, stop, step) mein numbers likho.");
+              return;
+            }
+            const rStart = parseInt(args[0], 10);
+            const rStop = parseInt(args[1], 10);
+            const rStep = args.length === 3 ? parseInt(args[2], 10) : 1;
+            if (rStep === 0 || Math.abs((rStop - rStart) / rStep) > 12 || (rStop - rStart) * rStep <= 0) {
+              showCodeEditError("Range mein 1 se 12 numbers hone chahiye (jaise range(1, 8)).");
+              return;
+            }
+
+            const condLine = lines.find((l) => /^\s*if\s+(.+):\s*$/.test(l));
+            if (!condLine) {
+              showCodeEditError("Line 2 par 'if i == 5:' ya 'if i % 2 == 0:' jaisi condition likho.");
+              return;
+            }
+            const condExpr = condLine.match(/^\s*if\s+(.+):\s*$/)[1].trim();
+            if (
+              !/^i\s*(==|!=|>=|<=|>|<)\s*-?\d+$/.test(condExpr) &&
+              !/^i\s*%\s*-?\d+\s*==\s*-?\d+$/.test(condExpr)
+            ) {
+              showCodeEditError("Condition 'i == 5', 'i > 3', ya 'i % 2 == 0' format mein likho.");
+              return;
+            }
+
+            numberConfig.rangeStart = rStart;
+            numberConfig.rangeStop = rStop;
+            numberConfig.rangeStep = rStep;
+            numberConfig.condExprByMode[numberState.mode] = condExpr;
+            numberConfig.customEdited = true;
+
+            isEditingCode = false;
+            codeEditorWrap.classList.add("hidden");
+            codeBlock.classList.remove("hidden");
+            btnEditCode.textContent = "Code Edit Karo";
+            resetNumbers();
+            numberState.explanation =
+              "Naya code apply ho gaya! Boxes aur conditions update ho gayi hain.";
+            renderCurrentTab();
+          }
+        }
+
+        function resetCodeToDefault() {
+          if (activeTab === "traffic") {
+            trafficConfig = {
+              lights: [...DEFAULT_TRAFFIC_CONFIG.lights],
+              initI: DEFAULT_TRAFFIC_CONFIG.initI,
+              indexExpr: DEFAULT_TRAFFIC_CONFIG.indexExpr,
+              stepInc: DEFAULT_TRAFFIC_CONFIG.stepInc,
+              skipLight: DEFAULT_TRAFFIC_CONFIG.skipLight,
+              forLoopMode: trafficConfig.forLoopMode,
+              forCount: DEFAULT_TRAFFIC_CONFIG.forCount,
+              customEdited: false,
+            };
+            closeCodeEditor();
+            resetTraffic();
+          } else {
+            numberConfig = {
+              rangeStart: DEFAULT_NUMBER_CONFIG.rangeStart,
+              rangeStop: DEFAULT_NUMBER_CONFIG.rangeStop,
+              rangeStep: DEFAULT_NUMBER_CONFIG.rangeStep,
+              condExprByMode: { ...DEFAULT_NUMBER_CONFIG.condExprByMode },
+              customEdited: false,
+            };
+            closeCodeEditor();
+            resetNumbers();
+          }
+        }
+
+        // ============================================================
+        // 10. PLAYBACK & TAB SWITCHING CONTROLLER
+        // ============================================================
+        function stopAutoPlay() {
+          if (playTimer !== null) {
+            clearInterval(playTimer);
+            playTimer = null;
+          }
+          btnPlay.textContent = "▶ Auto Play";
+        }
+
+        function toggleAutoPlay() {
+          if (playTimer !== null) {
+            stopAutoPlay();
+            return;
+          }
+          if (isEditingCode) closeCodeEditor();
+          const isDone = activeTab === "traffic" ? trafficState.finished : numberState.finished;
+          if (isDone) return;
+
+          btnPlay.textContent = "⏸ Pause";
+          runNextStep();
+          if (
+            (activeTab === "traffic" && !trafficState.finished) ||
+            (activeTab === "numbers" && !numberState.finished)
+          ) {
+            playTimer = setInterval(runNextStep, speedMs);
+          }
+        }
+
+        function runNextStep() {
+          if (isEditingCode) closeCodeEditor();
+          if (activeTab === "traffic") {
+            stepTraffic();
+          } else {
+            stepNumbers();
+          }
+        }
+
+        function renderCurrentTab() {
+          if (activeTab === "traffic") {
+            renderTrafficTab();
+          } else {
+            renderNumbersTab();
+          }
+          if (quizMode) renderQuiz();
+        }
+
+        function switchTab(tab) {
+          if (activeTab === tab) return;
+          stopAutoPlay();
+          if (isEditingCode) closeCodeEditor();
+          activeTab = tab;
+
+          const isTraffic = tab === "traffic";
+          tabBtnTraffic.classList.toggle("active", isTraffic);
+          tabBtnTraffic.setAttribute("aria-selected", String(isTraffic));
+          tabBtnNumbers.classList.toggle("active", !isTraffic);
+          tabBtnNumbers.setAttribute("aria-selected", String(!isTraffic));
+
+          panelTraffic.classList.toggle("hidden", !isTraffic);
+          panelNumbers.classList.toggle("hidden", isTraffic);
+
+          if (isTraffic) {
+            tabHeading.textContent = "3D Traffic Light Simulator — while True, continue & break";
+            tabSubheading.textContent =
+              "3D road par dekho normal traffic, Ambulance (continue) aur CM Convoy (break) kaise kaam karte hain.";
+            requestAnimationFrame(() => resizeThreeScene());
+          } else {
+            tabHeading.textContent = "Number Demo — for i in range(1, 8)";
+            tabSubheading.textContent =
+              "break, continue aur pass ka farq boxes par live dekho.";
+          }
+
+          if (quizMode) refreshQuizQuestion();
+          renderCurrentTab();
+        }
+
+        // Event Listeners
+        tabBtnTraffic.addEventListener("click", () => switchTab("traffic"));
+        tabBtnNumbers.addEventListener("click", () => switchTab("numbers"));
+
+        btnCameraAngle.addEventListener("click", cycleCameraAngle);
+
+        btnSoundToggle.addEventListener("click", () => {
+          soundEnabled = !soundEnabled;
+          btnSoundToggle.setAttribute("aria-pressed", String(soundEnabled));
+          btnSoundToggle.classList.toggle("active", soundEnabled);
+          btnSoundToggle.textContent = soundEnabled ? "Sound: ON" : "Sound: OFF";
+          if (soundEnabled) playSignalSound("Green");
+        });
+
+        btnBack.addEventListener("click", () => {
+          if (isEditingCode) closeCodeEditor();
+          if (activeTab === "traffic") stepBackTraffic();
+          else stepBackNumbers();
+        });
+
+        btnNext.addEventListener("click", () => {
+          stopAutoPlay();
+          runNextStep();
+        });
+
+        btnPlay.addEventListener("click", toggleAutoPlay);
+
+        btnReset.addEventListener("click", () => {
+          if (isEditingCode) closeCodeEditor();
+          if (activeTab === "traffic") {
+            resetTraffic();
+          } else {
+            resetNumbers();
+          }
+        });
+
+        btnQuizToggle.addEventListener("click", () => {
+          quizMode = !quizMode;
+          if (quizMode) {
+            stopAutoPlay();
+            refreshQuizQuestion();
+          } else {
+            renderQuiz();
+          }
+        });
+
+        quizOptionsEl.addEventListener("click", (e) => {
+          const btn = e.target.closest(".quiz-opt-btn");
+          if (!btn) return;
+          handleQuizAnswer(btn.getAttribute("data-opt"));
+        });
+
+        speedNormalBtn.addEventListener("click", () => {
+          speedMs = 950;
+          speedNormalBtn.classList.add("active");
+          speedFastBtn.classList.remove("active");
+          if (playTimer !== null) {
+            clearInterval(playTimer);
+            playTimer = setInterval(runNextStep, speedMs);
+          }
+        });
+
+        speedFastBtn.addEventListener("click", () => {
+          speedMs = 450;
+          speedFastBtn.classList.add("active");
+          speedNormalBtn.classList.remove("active");
+          if (playTimer !== null) {
+            clearInterval(playTimer);
+            playTimer = setInterval(runNextStep, speedMs);
+          }
+        });
+
+        btnNightToggle.addEventListener("click", () => {
+          trafficState.nightMode = !trafficState.nightMode;
+          trafficState.explanation = trafficState.nightMode
+            ? `Night Mode ON! Ab "${trafficConfig.skipLight}" light aane par 'continue' usse skip kar dega.`
+            : "Night Mode OFF! Ab saari lights normally chalengi.";
+          if (quizMode) refreshQuizQuestion();
+          renderTrafficTab();
+        });
+
+        btnAmbulanceToggle.addEventListener("click", () => {
+          trafficState.ambulanceMode = !trafficState.ambulanceMode;
+          if (trafficState.ambulanceMode) {
+            ambulanceX = -22;
+            playSirenBurst();
+            trafficState.explanation =
+              "Ambulance ON! Siren ke saath Red light par bhi nikalegi — code mein 'continue' highlight hoga aur neeche ki lines skip hongi.";
+          } else {
+            trafficState.explanation =
+              "Ambulance OFF! Ab normal traffic signal rules ke hisaab se chalega.";
+          }
+          if (quizMode) refreshQuizQuestion();
+          renderTrafficTab();
+        });
+
+        btnConvoyToggle.addEventListener("click", () => {
+          if (trafficState.finished) return;
+          trafficState.cmConvoy = !trafficState.cmConvoy;
+          if (trafficState.cmConvoy) {
+            convoyX = -28;
+            playConvoyHorn();
+            trafficState.explanation =
+              "CM Convoy (Pilot Gaadi + Kaali SUV + Police Jeep) aa raha hai! Baaki saara traffic ruk gaya — Next Step par 'break' chalega.";
+          } else {
+            trafficState.explanation =
+              "CM Convoy OFF kar diya — normal traffic phir se signal ke hisaab se chalega.";
+          }
+          if (quizMode) refreshQuizQuestion();
+          renderTrafficTab();
+        });
+
+        btnBreakToggle.addEventListener("click", () => {
+          if (trafficState.finished) return;
+          trafficState.breakNow = !trafficState.breakNow;
+          trafficState.explanation = trafficState.breakNow
+            ? "Break Now ON ho gaya (break_now = True)! Jab loop break condition par aayega toh 'break' loop rok dega."
+            : "Break Now OFF kar diya (break_now = False) — loop chalta rahega.";
+          if (quizMode) refreshQuizQuestion();
+          renderTrafficTab();
+        });
+
+        btnForToggle.addEventListener("click", () => {
+          trafficConfig.forLoopMode = !trafficConfig.forLoopMode;
+          if (isEditingCode) closeCodeEditor();
+          resetTraffic();
+        });
+
+        btnClearConsole.addEventListener("click", () => {
+          globalOutputs = [];
+          renderConsole();
+        });
+
+        modeRadios.forEach((radio) => {
+          radio.addEventListener("change", (e) => {
+            if (!e.target.checked) return;
+            numberState.mode = e.target.value;
+            if (isEditingCode) closeCodeEditor();
+            resetNumbers();
+          });
+        });
+
+        btnEditCode.addEventListener("click", () => {
+          if (isEditingCode) closeCodeEditor();
+          else openCodeEditor();
+        });
+        btnCancelEdit.addEventListener("click", closeCodeEditor);
+        btnApplyCode.addEventListener("click", applyEditedCode);
+        btnResetCode.addEventListener("click", resetCodeToDefault);
+
+        // Initialize on load
+        renderXp();
+        numberState.boxStates = initBoxStates(getNumberSequence(numberConfig));
+        resetTraffic();
+      })();
+    </script>
+  </body>
+</html>

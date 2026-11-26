@@ -1,0 +1,6 @@
+{
+  "name": "Python Loop Control Simulator (Hinglish)",
+  "description": "Interactive beginner-friendly simulator teaching break, continue, and pass in Python loops using Hinglish explanations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
