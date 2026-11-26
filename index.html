@@ -560,6 +560,197 @@
         z-index: 4;
       }
 
+      .speed-labels-layer {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 3;
+      }
+
+      .car-speed-badge {
+        position: absolute;
+        left: 0;
+        top: 0;
+        transform: translate(-50%, -100%);
+        appearance: none;
+        border: 1px solid rgba(15, 23, 42, 0.24);
+        background: rgba(255, 255, 255, 0.94);
+        color: #0f172a;
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        font-weight: 700;
+        line-height: 1.1;
+        padding: 3px 7px;
+        border-radius: 6px;
+        white-space: nowrap;
+        pointer-events: auto;
+        cursor: pointer;
+        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.18);
+        transition: border-color 120ms ease, background-color 120ms ease, color 120ms ease;
+      }
+
+      .car-speed-badge:hover {
+        border-color: var(--accent-primary);
+        background: #eff6ff;
+      }
+
+      .car-speed-badge.selected {
+        border: 2px solid var(--accent-primary);
+        background: #dbeafe;
+        color: #1e3a8a;
+        z-index: 5;
+      }
+
+      .car-speed-badge.overspeed {
+        background: #dc2626;
+        border-color: #991b1b;
+        color: #ffffff;
+      }
+
+      .car-speed-badge.overspeed.selected {
+        border-color: #fef08a;
+        box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.45);
+      }
+
+      .overspeed-alert {
+        position: absolute;
+        top: 48px;
+        left: 12px;
+        background: #dc2626;
+        color: #ffffff;
+        border: 1px solid #991b1b;
+        border-radius: var(--radius-sm);
+        padding: 6px 11px;
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.01em;
+        box-shadow: 0 4px 12px rgba(185, 28, 28, 0.35);
+        pointer-events: none;
+        z-index: 5;
+      }
+
+      .speed-limit-chip {
+        position: absolute;
+        top: 48px;
+        right: 12px;
+        background: rgba(255, 255, 255, 0.94);
+        color: #991b1b;
+        border: 2px solid #dc2626;
+        border-radius: var(--radius-sm);
+        padding: 4px 9px;
+        font-family: var(--font-mono);
+        font-size: 0.74rem;
+        font-weight: 800;
+        pointer-events: none;
+        z-index: 4;
+      }
+
+      .road-stage.night .speed-limit-chip {
+        background: rgba(15, 23, 42, 0.92);
+        color: #fca5a5;
+        border-color: #ef4444;
+      }
+
+      .vehicle-speed-panel {
+        margin-top: 12px;
+        padding: 12px 14px;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border-strong);
+        background: var(--bg-subtle);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .vehicle-speed-panel.overspeed {
+        border-color: #ef4444;
+        background: #fef2f2;
+      }
+
+      .vehicle-speed-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .vehicle-speed-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: var(--text-primary);
+      }
+
+      .vehicle-color-dot {
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        border: 1px solid rgba(15, 23, 42, 0.25);
+        flex-shrink: 0;
+      }
+
+      .vehicle-speed-readout {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--text-secondary);
+      }
+
+      .slider-overspeed-tag {
+        background: #dc2626;
+        color: #ffffff;
+        padding: 2px 8px;
+        border-radius: var(--radius-sm);
+        font-size: 0.72rem;
+        font-weight: 800;
+      }
+
+      .vehicle-slider-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .vehicle-slider-wrap {
+        flex: 1 1 220px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .vehicle-speed-slider {
+        width: 100%;
+        accent-color: var(--accent-primary);
+        cursor: pointer;
+        height: 6px;
+      }
+
+      .vehicle-speed-panel.overspeed .vehicle-speed-slider {
+        accent-color: #dc2626;
+      }
+
+      .vehicle-slider-scale {
+        display: flex;
+        justify-content: space-between;
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        color: var(--text-muted);
+      }
+
+      .vehicle-slider-scale .limit-mark {
+        color: #dc2626;
+        font-weight: 700;
+      }
+
       /* Tab 2: Number Demo Stage */
       .mode-selector {
         display: grid;
@@ -1038,6 +1229,26 @@
         letter-spacing: 0.02em;
       }
 
+      .code-line.overspeed-active {
+        background: rgba(220, 38, 38, 0.24);
+        border-top-color: rgba(248, 113, 113, 0.75);
+        border-bottom-color: rgba(248, 113, 113, 0.75);
+      }
+
+      .code-line.overspeed-active .code-gutter {
+        color: #fca5a5;
+        font-weight: 700;
+      }
+
+      .code-overspeed-tag {
+        margin-left: auto;
+        padding-left: 14px;
+        font-size: 0.72rem;
+        font-weight: 800;
+        color: #fca5a5;
+        letter-spacing: 0.02em;
+      }
+
       .code-editor-wrap {
         display: flex;
         flex-direction: column;
@@ -1421,10 +1632,51 @@
 
             <div id="road-stage" class="road-stage">
               <div id="three-mount" class="three-mount" aria-label="3D Traffic Road Simulator"></div>
+              <div id="speed-labels-layer" class="speed-labels-layer"></div>
               <div id="stage-status-tag" class="stage-status-tag">Signal: Taiyar</div>
               <div id="signal-label-box" class="signal-label-box">Taiyar</div>
+              <div id="overspeed-alert" class="overspeed-alert hidden" role="alert">
+                Overspeed! Limit 80 km/h paar ho gayi!
+              </div>
+              <div id="speed-limit-chip" class="speed-limit-chip">Limit: 80 km/h</div>
               <div id="car-state-caption" class="car-state-caption">Traffic: Start hone ka intezaar</div>
-              <div class="orbit-hint">Mouse drag: ghumao · Scroll: zoom</div>
+              <div class="orbit-hint">Gaadi click: speed badlo · Drag: ghumao · Scroll: zoom</div>
+            </div>
+
+            <div id="vehicle-speed-panel" class="vehicle-speed-panel hidden" aria-live="polite">
+              <div class="vehicle-speed-head">
+                <div class="vehicle-speed-title">
+                  <span id="selected-vehicle-dot" class="vehicle-color-dot"></span>
+                  <span id="selected-vehicle-name">Gaadi Chuno</span>
+                  <span id="slider-overspeed-tag" class="slider-overspeed-tag hidden">Overspeed!</span>
+                </div>
+                <div class="vehicle-speed-readout">
+                  <span>Live: <strong id="selected-live-speed">0 km/h</strong></span>
+                  <span>·</span>
+                  <span>Set: <strong id="selected-target-speed">55 km/h</strong></span>
+                  <button id="btn-close-speed-panel" class="btn-mini" type="button">Band Karo</button>
+                </div>
+              </div>
+              <div class="vehicle-slider-row">
+                <div class="vehicle-slider-wrap">
+                  <input
+                    id="vehicle-speed-slider"
+                    class="vehicle-speed-slider"
+                    type="range"
+                    min="0"
+                    max="120"
+                    step="1"
+                    value="55"
+                    aria-label="Gaadi ki speed badlo (0 se 120 km/h)"
+                  />
+                  <div class="vehicle-slider-scale">
+                    <span>0 km/h</span>
+                    <span>40 km/h</span>
+                    <span class="limit-mark">Limit: 80 km/h</span>
+                    <span>120 km/h</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
 
@@ -1687,9 +1939,21 @@
         const trafficModeLabel = document.getElementById("traffic-mode-label");
         const roadStage = document.getElementById("road-stage");
         const threeMount = document.getElementById("three-mount");
+        const speedLabelsLayer = document.getElementById("speed-labels-layer");
         const stageStatusTag = document.getElementById("stage-status-tag");
         const signalLabelBox = document.getElementById("signal-label-box");
+        const overspeedAlert = document.getElementById("overspeed-alert");
+        const speedLimitChip = document.getElementById("speed-limit-chip");
         const carStateCaption = document.getElementById("car-state-caption");
+        const vehicleSpeedPanel = document.getElementById("vehicle-speed-panel");
+        const selectedVehicleDot = document.getElementById("selected-vehicle-dot");
+        const selectedVehicleName = document.getElementById("selected-vehicle-name");
+        const sliderOverspeedTag = document.getElementById("slider-overspeed-tag");
+        const selectedLiveSpeedEl = document.getElementById("selected-live-speed");
+        const selectedTargetSpeedEl = document.getElementById("selected-target-speed");
+        const vehicleSpeedSlider = document.getElementById("vehicle-speed-slider");
+        const btnCloseSpeedPanel = document.getElementById("btn-close-speed-panel");
+        let lastOverspeedBeepAt = 0;
 
         // Tab 2 Elements
         const modeRadios = document.querySelectorAll('input[name="num-mode"]');
@@ -1764,6 +2028,15 @@
           }
         }
 
+        function playOverspeedBeep() {
+          if (!soundEnabled) return;
+          const nowMs = performance.now();
+          if (nowMs - lastOverspeedBeepAt < 900) return;
+          lastOverspeedBeepAt = nowMs;
+          playTone(880.0, 0.09, "square", 0, 0.032);
+          playTone(660.0, 0.11, "square", 0.1, 0.03);
+        }
+
         function addXp(amount) {
           if (!amount || amount <= 0) return;
           xpTotal += amount;
@@ -1835,20 +2108,24 @@
           globalOutputs = globalOutputs.filter((item) => item.id !== id);
         }
 
-        function renderCodeLines(lines, activeLineIdx, skippedIndices) {
+        function renderCodeLines(lines, activeLineIdx, skippedIndices, overspeedLineIdx) {
           const skipSet = skippedIndices instanceof Set ? skippedIndices : new Set(skippedIndices || []);
           codeBlock.innerHTML = lines
             .map((text, idx) => {
               const isActive = idx === activeLineIdx;
               const isSkipped = skipSet.has(idx);
+              const isOverspeedLine = idx === overspeedLineIdx;
               return `
-                <div class="code-line ${isActive ? "active" : ""} ${isSkipped ? "skipped-line" : ""}">
+                <div class="code-line ${isActive ? "active" : ""} ${isSkipped ? "skipped-line" : ""} ${
+                isOverspeedLine ? "overspeed-active" : ""
+              }" data-line-idx="${idx}">
                   <span class="code-gutter">
                     <span class="code-pointer" aria-hidden="true">▶</span>
                     <span>${idx + 1}</span>
                   </span>
                   <span class="code-text">${highlightPython(text)}</span>
-                  ${isSkipped ? '<span class="code-skip-tag">Skipped</span>' : ""}
+                  ${isOverspeedLine ? '<span class="code-overspeed-tag">Overspeed!</span>' : ""}
+                  ${!isOverspeedLine && isSkipped ? '<span class="code-skip-tag">Skipped</span>' : ""}
                 </div>
               `;
             })
@@ -1859,7 +2136,7 @@
           stateGrid.innerHTML = entries
             .map(
               ([key, val]) => `
-              <div class="state-cell">
+              <div class="state-cell" data-state-key="${escapeHtml(key)}">
                 <span class="state-key">${escapeHtml(key)}</span>
                 <span class="state-val">${escapeHtml(String(val))}</span>
               </div>
@@ -2010,6 +2287,7 @@
           indexExpr: "i % 3",
           stepInc: 1,
           skipLight: "Yellow",
+          speedLimit: 80,
           forLoopMode: false,
           forCount: 6,
           customEdited: false,
@@ -2021,6 +2299,7 @@
           indexExpr: DEFAULT_TRAFFIC_CONFIG.indexExpr,
           stepInc: DEFAULT_TRAFFIC_CONFIG.stepInc,
           skipLight: DEFAULT_TRAFFIC_CONFIG.skipLight,
+          speedLimit: DEFAULT_TRAFFIC_CONFIG.speedLimit,
           forLoopMode: DEFAULT_TRAFFIC_CONFIG.forLoopMode,
           forCount: DEFAULT_TRAFFIC_CONFIG.forCount,
           customEdited: false,
@@ -2031,8 +2310,11 @@
           if (cfg.forLoopMode) {
             const lines = [
               `lights = [${listStr}]`,
+              `limit = ${cfg.speedLimit}`,
               `for i in range(${cfg.forCount}):`,
               `    light = lights[${cfg.indexExpr}]`,
+              "    if speed > limit:",
+              `        print("Overspeed! Alert: ${cfg.speedLimit} km/h limit paar!")`,
               `    if night_mode and light == "${cfg.skipLight}":`,
               "        continue",
               "    if ambulance_aayi:",
@@ -2049,33 +2331,38 @@
               'print("Loop band ho gaya! (for / CM Convoy)")',
             ];
             const map = {
-              loopHeader: 1,
-              pickLight: 2,
+              loopHeader: 2,
+              pickLight: 3,
               incI: -1,
-              ifNight: 3,
-              continueLine: 4,
-              ifAmbulance: 5,
-              ambPrint: 6,
-              ambContinue: 7,
-              ifBreak: 8,
-              breakLine: 9,
-              ifGreen: 10,
-              printGreen: 11,
-              elifYellow: 12,
-              printYellow: 13,
-              elseRed: 14,
-              printRed: 15,
-              printDone: 16,
+              ifSpeedLimit: 4,
+              printOverspeed: 5,
+              ifNight: 6,
+              continueLine: 7,
+              ifAmbulance: 8,
+              ambPrint: 9,
+              ambContinue: 10,
+              ifBreak: 11,
+              breakLine: 12,
+              ifGreen: 13,
+              printGreen: 14,
+              elifYellow: 15,
+              printYellow: 16,
+              elseRed: 17,
+              printRed: 18,
+              printDone: 19,
               done: -1,
             };
             return { lines, map };
           }
           const lines = [
             `lights = [${listStr}]`,
+            `limit = ${cfg.speedLimit}`,
             `i = ${cfg.initI}`,
             "while True:",
             `    light = lights[${cfg.indexExpr}]`,
             `    i = i + ${cfg.stepInc}`,
+            "    if speed > limit:",
+            `        print("Overspeed! Alert: ${cfg.speedLimit} km/h limit paar!")`,
             `    if night_mode and light == "${cfg.skipLight}":`,
             "        continue",
             "    if ambulance_aayi:",
@@ -2092,23 +2379,25 @@
             'print("Loop band ho gaya! (CM Convoy / break)")',
           ];
           const map = {
-            loopHeader: 2,
-            pickLight: 3,
-            incI: 4,
-            ifNight: 5,
-            continueLine: 6,
-            ifAmbulance: 7,
-            ambPrint: 8,
-            ambContinue: 9,
-            ifBreak: 10,
-            breakLine: 11,
-            ifGreen: 12,
-            printGreen: 13,
-            elifYellow: 14,
-            printYellow: 15,
-            elseRed: 16,
-            printRed: 17,
-            printDone: 18,
+            loopHeader: 3,
+            pickLight: 4,
+            incI: 5,
+            ifSpeedLimit: 6,
+            printOverspeed: 7,
+            ifNight: 8,
+            continueLine: 9,
+            ifAmbulance: 10,
+            ambPrint: 11,
+            ambContinue: 12,
+            ifBreak: 13,
+            breakLine: 14,
+            ifGreen: 15,
+            printGreen: 16,
+            elifYellow: 17,
+            printYellow: 18,
+            elseRed: 19,
+            printRed: 20,
+            printDone: 21,
             done: -1,
           };
           return { lines, map };
@@ -2584,6 +2873,49 @@
         signalGroup.add(basePlinth, mainMast, crossArm, signalBox, poleBox, signalPointLight);
         threeScene.add(signalGroup);
 
+        // Highway 80 km/h Speed Limit Roadside Sign (x = -5.5, z = 5.45)
+        const speedSignGroup = new THREE.Group();
+        speedSignGroup.position.set(-5.5, 0, 5.45);
+        const signPole = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.1, 3.0, 10), steelMat);
+        signPole.position.y = 1.5;
+        signPole.castShadow = !isSoftwareGl;
+
+        const signCanvas = document.createElement("canvas");
+        signCanvas.width = 256;
+        signCanvas.height = 256;
+        const sctx = signCanvas.getContext("2d");
+        sctx.fillStyle = "#ffffff";
+        sctx.fillRect(0, 0, 256, 256);
+        sctx.strokeStyle = "#dc2626";
+        sctx.lineWidth = 28;
+        sctx.beginPath();
+        sctx.arc(128, 128, 106, 0, Math.PI * 2);
+        sctx.stroke();
+        sctx.fillStyle = "#0f172a";
+        sctx.font = "bold 92px monospace";
+        sctx.textAlign = "center";
+        sctx.textBaseline = "middle";
+        sctx.fillText("80", 128, 118);
+        sctx.font = "bold 26px sans-serif";
+        sctx.fillStyle = "#991b1b";
+        sctx.fillText("LIMIT km/h", 128, 184);
+
+        const signBoardTex = new THREE.CanvasTexture(signCanvas);
+        signBoardTex.colorSpace = THREE.SRGBColorSpace;
+        const signBoard = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.75, 0.75, 0.1, 24),
+          [
+            steelMat,
+            new THREE.MeshStandardMaterial({ map: signBoardTex, roughness: 0.4 }),
+            new THREE.MeshStandardMaterial({ map: signBoardTex, roughness: 0.4 }),
+          ]
+        );
+        signBoard.rotation.z = Math.PI / 2;
+        signBoard.position.y = 2.85;
+        signBoard.castShadow = !isSoftwareGl;
+        speedSignGroup.add(signPole, signBoard);
+        threeScene.add(speedSignGroup);
+
         // ============================================================
         // PROCEDURAL MULTI-PART VEHICLES (THREE.Group, bottom-center grounded)
         // ============================================================
@@ -2912,17 +3244,24 @@
         }
 
         // Spawn 5 Normal Traffic Cars on Main Lane (z = +2.3)
+        const KMH_TO_UNITS = 0.16;
         const normalTrafficSpecs = [
-          { color: 0x2563eb, hatch: false, initX: -2.2 },
-          { color: 0xdc2626, hatch: true, initX: -9.5 },
-          { color: 0x0d9488, hatch: false, initX: -17.0 },
-          { color: 0xf59e0b, hatch: true, initX: -24.5 },
-          { color: 0x64748b, hatch: false, initX: -32.0 },
+          { id: "car-0", name: "Neeli Car", dot: "#2563eb", color: 0x2563eb, hatch: false, initX: -2.2, initKmh: 55 },
+          { id: "car-1", name: "Laal Car", dot: "#dc2626", color: 0xdc2626, hatch: true, initX: -9.5, initKmh: 62 },
+          { id: "car-2", name: "Teal Car", dot: "#0d9488", color: 0x0d9488, hatch: false, initX: -17.0, initKmh: 48 },
+          { id: "car-3", name: "Peeli Car", dot: "#f59e0b", color: 0xf59e0b, hatch: true, initX: -24.5, initKmh: 70 },
+          { id: "car-4", name: "Grey Car", dot: "#64748b", color: 0x64748b, hatch: false, initX: -32.0, initKmh: 58 },
         ];
         const normalTrafficCars = normalTrafficSpecs.map((spec) => {
           const car = createNormalCar(spec.color, spec.hatch);
+          car.id = spec.id;
+          car.hinglishName = spec.name;
+          car.dotColor = spec.dot;
+          car.targetKmh = spec.initKmh;
+          car.liveKmh = 0;
           car.x = spec.initX;
           car.speed = 0;
+          car.group.userData.vehicleId = spec.id;
           car.group.position.set(car.x, 0, 2.3);
           threeScene.add(car.group);
           return car;
@@ -2931,6 +3270,13 @@
         // Spawn Ambulance on Priority Lane (z = -2.3)
         const ambulanceActor = createAmbulance();
         let ambulanceX = -26;
+        ambulanceActor.id = "ambulance";
+        ambulanceActor.hinglishName = "Ambulance";
+        ambulanceActor.dotColor = "#ef4444";
+        ambulanceActor.targetKmh = 78;
+        ambulanceActor.liveKmh = 0;
+        ambulanceActor.speed = 0;
+        ambulanceActor.group.userData.vehicleId = "ambulance";
         ambulanceActor.group.position.set(ambulanceX, 0, -2.3);
         ambulanceActor.group.visible = false;
         threeScene.add(ambulanceActor.group);
@@ -2939,26 +3285,336 @@
         const pilotCar = createPilotCar();
         const vipSuv = createBlackVipSuv();
         const policeJeep = createPoliceJeep();
+        pilotCar.id = "convoy-pilot";
+        pilotCar.hinglishName = "Pilot Gaadi (CM)";
+        pilotCar.dotColor = "#1d4ed8";
+        pilotCar.group.userData.vehicleId = "convoy-pilot";
+
+        vipSuv.id = "convoy-suv";
+        vipSuv.hinglishName = "Kaali SUV (CM)";
+        vipSuv.dotColor = "#0f172a";
+        vipSuv.group.userData.vehicleId = "convoy-suv";
+
+        policeJeep.id = "convoy-jeep";
+        policeJeep.hinglishName = "Police Jeep (CM)";
+        policeJeep.dotColor = "#1e3a8a";
+        policeJeep.group.userData.vehicleId = "convoy-jeep";
+
         const convoyGroup = new THREE.Group();
         pilotCar.group.position.set(6.5, 0, 0);
         vipSuv.group.position.set(0, 0, 0);
         policeJeep.group.position.set(-6.5, 0, 0);
         convoyGroup.add(pilotCar.group, vipSuv.group, policeJeep.group);
         let convoyX = -32;
+        let convoyTargetKmh = 68;
+        let convoySpeedUnits = 0;
+        let convoyLiveKmh = 0;
         convoyGroup.position.set(convoyX, 0, -2.3);
         convoyGroup.visible = false;
         threeScene.add(convoyGroup);
 
+        // Vehicle Registry + Floating Speed Badges + Raycaster Selection
+        let selectedVehicleId = null;
+        const _projVec = new THREE.Vector3();
+        const _pointerNdc = new THREE.Vector2();
+        const raycaster = new THREE.Raycaster();
+        let lastHudUpdateMs = 0;
+        let lastDisplayedStateSpeed = null;
+        let lastDisplayedLimit = null;
+
+        const vehicleEntries = [
+          ...normalTrafficCars.map((car) => ({
+            id: car.id,
+            name: car.hinglishName,
+            dot: car.dotColor,
+            group: car.group,
+            roofY: 2.15,
+            isConvoy: false,
+            getTargetKmh: () => car.targetKmh,
+            setTargetKmh: (v) => {
+              car.targetKmh = v;
+            },
+            getLiveKmh: () => car.liveKmh,
+            isVisible: () => true,
+            getWorldPos: (out) => out.set(car.x, 2.15, 2.3),
+          })),
+          {
+            id: "ambulance",
+            name: "Ambulance",
+            dot: "#ef4444",
+            group: ambulanceActor.group,
+            roofY: 2.75,
+            isConvoy: false,
+            getTargetKmh: () => ambulanceActor.targetKmh,
+            setTargetKmh: (v) => {
+              ambulanceActor.targetKmh = v;
+            },
+            getLiveKmh: () => ambulanceActor.liveKmh,
+            isVisible: () => trafficState.ambulanceMode,
+            getWorldPos: (out) => out.set(ambulanceX, 2.75, -2.3),
+          },
+          {
+            id: "convoy-pilot",
+            name: "Pilot Gaadi (CM)",
+            dot: "#1d4ed8",
+            group: pilotCar.group,
+            roofY: 2.25,
+            isConvoy: true,
+            getTargetKmh: () => convoyTargetKmh,
+            setTargetKmh: (v) => {
+              convoyTargetKmh = v;
+            },
+            getLiveKmh: () => convoyLiveKmh,
+            isVisible: () => trafficState.cmConvoy,
+            getWorldPos: (out) => out.set(convoyX + 6.5, 2.25, -2.3),
+          },
+          {
+            id: "convoy-suv",
+            name: "Kaali SUV (CM)",
+            dot: "#0f172a",
+            group: vipSuv.group,
+            roofY: 2.45,
+            isConvoy: true,
+            getTargetKmh: () => convoyTargetKmh,
+            setTargetKmh: (v) => {
+              convoyTargetKmh = v;
+            },
+            getLiveKmh: () => convoyLiveKmh,
+            isVisible: () => trafficState.cmConvoy,
+            getWorldPos: (out) => out.set(convoyX, 2.45, -2.3),
+          },
+          {
+            id: "convoy-jeep",
+            name: "Police Jeep (CM)",
+            dot: "#1e3a8a",
+            group: policeJeep.group,
+            roofY: 2.45,
+            isConvoy: true,
+            getTargetKmh: () => convoyTargetKmh,
+            setTargetKmh: (v) => {
+              convoyTargetKmh = v;
+            },
+            getLiveKmh: () => convoyLiveKmh,
+            isVisible: () => trafficState.cmConvoy,
+            getWorldPos: (out) => out.set(convoyX - 6.5, 2.45, -2.3),
+          },
+        ];
+
+        const vehicleMap = new Map();
+        const selectableGroups = [];
+        vehicleEntries.forEach((entry) => {
+          const badge = document.createElement("button");
+          badge.type = "button";
+          badge.className = "car-speed-badge";
+          badge.textContent = "0 km/h";
+          badge.title = `${entry.name} — Speed badalne ke liye click karo`;
+          badge.addEventListener("click", (e) => {
+            e.stopPropagation();
+            selectVehicle(entry.id);
+          });
+          speedLabelsLayer.appendChild(badge);
+          entry.badgeEl = badge;
+          vehicleMap.set(entry.id, entry);
+          selectableGroups.push(entry.group);
+        });
+
+        function getTrackedHighwayInfo() {
+          const limit = trafficConfig.speedLimit;
+          let maxLive = 0;
+          let overspeedEntry = null;
+          vehicleEntries.forEach((entry) => {
+            if (!entry.isVisible()) return;
+            const live = entry.getLiveKmh();
+            if (live > maxLive) {
+              maxLive = live;
+              if (live > limit) overspeedEntry = entry;
+            }
+          });
+          const sel = selectedVehicleId ? vehicleMap.get(selectedVehicleId) : null;
+          if (sel && sel.isVisible()) {
+            const selLive = sel.getLiveKmh();
+            if (selLive > limit) {
+              return { speed: selLive, isOverspeed: true, who: sel.name };
+            }
+            if (overspeedEntry) {
+              return { speed: maxLive, isOverspeed: true, who: overspeedEntry.name };
+            }
+            return { speed: selLive, isOverspeed: false, who: sel.name };
+          }
+          if (overspeedEntry) {
+            return { speed: maxLive, isOverspeed: true, who: overspeedEntry.name };
+          }
+          return { speed: maxLive, isOverspeed: maxLive > limit, who: "Traffic" };
+        }
+
+        function syncVehicleSliderPanel() {
+          const sel = selectedVehicleId ? vehicleMap.get(selectedVehicleId) : null;
+          if (!sel || !sel.isVisible()) {
+            vehicleSpeedPanel.classList.add("hidden");
+            return;
+          }
+          vehicleSpeedPanel.classList.remove("hidden");
+          const targetKmh = sel.getTargetKmh();
+          const liveKmh = sel.getLiveKmh();
+          const isOver = liveKmh > trafficConfig.speedLimit || targetKmh > trafficConfig.speedLimit;
+          selectedVehicleDot.style.background = sel.dot;
+          selectedVehicleName.textContent = sel.name;
+          selectedLiveSpeedEl.textContent = `${liveKmh} km/h`;
+          selectedTargetSpeedEl.textContent = `${targetKmh} km/h`;
+          if (document.activeElement !== vehicleSpeedSlider) {
+            vehicleSpeedSlider.value = String(targetKmh);
+          }
+          sliderOverspeedTag.classList.toggle("hidden", !isOver);
+          vehicleSpeedPanel.classList.toggle("overspeed", isOver);
+        }
+
+        function selectVehicle(vehicleId) {
+          const entry = vehicleMap.get(vehicleId);
+          if (!entry || !entry.isVisible()) return;
+          selectedVehicleId = vehicleId;
+          syncVehicleSliderPanel();
+          updateLiveSpeedHud(true);
+        }
+
+        // Raycast click-vs-drag on 3D canvas
+        let pointerDownX = 0;
+        let pointerDownY = 0;
+        threeRenderer.domElement.addEventListener("pointerdown", (e) => {
+          pointerDownX = e.clientX;
+          pointerDownY = e.clientY;
+        });
+        threeRenderer.domElement.addEventListener("pointerup", (e) => {
+          if (Math.hypot(e.clientX - pointerDownX, e.clientY - pointerDownY) > 6) return;
+          const rect = threeRenderer.domElement.getBoundingClientRect();
+          if (rect.width <= 0 || rect.height <= 0) return;
+          _pointerNdc.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+          _pointerNdc.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+          raycaster.setFromCamera(_pointerNdc, threeCamera);
+          const hits = raycaster.intersectObjects(selectableGroups, true);
+          for (let h = 0; h < hits.length; h++) {
+            let obj = hits[h].object;
+            while (obj && !obj.userData.vehicleId) {
+              obj = obj.parent;
+            }
+            if (obj && obj.userData.vehicleId) {
+              const entry = vehicleMap.get(obj.userData.vehicleId);
+              if (entry && entry.isVisible()) {
+                selectVehicle(entry.id);
+                return;
+              }
+            }
+          }
+        });
+
+        function updateLiveSpeedHud(forceDomSync) {
+          const limit = trafficConfig.speedLimit;
+          const tracked = getTrackedHighwayInfo();
+
+          // Update floating km/h labels above every visible vehicle
+          const stageW = threeMount.clientWidth || 640;
+          const stageH = threeMount.clientHeight || 360;
+          vehicleEntries.forEach((entry) => {
+            const badge = entry.badgeEl;
+            if (!entry.isVisible()) {
+              badge.style.display = "none";
+              return;
+            }
+            entry.getWorldPos(_projVec);
+            _projVec.project(threeCamera);
+            if (_projVec.z > 1 || _projVec.z < -1) {
+              badge.style.display = "none";
+              return;
+            }
+            const sx = (_projVec.x * 0.5 + 0.5) * stageW;
+            const sy = (-_projVec.y * 0.5 + 0.5) * stageH;
+            if (sx < -30 || sx > stageW + 30 || sy < 8 || sy > stageH + 20) {
+              badge.style.display = "none";
+              return;
+            }
+            const liveKmh = entry.getLiveKmh();
+            const isOver = liveKmh > limit;
+            const isSel = selectedVehicleId === entry.id;
+            badge.style.display = "block";
+            badge.style.transform = `translate3d(${sx.toFixed(1)}px, ${sy.toFixed(1)}px, 0) translate(-50%, -100%)`;
+            const nextTxt = isOver ? `${liveKmh} km/h · Overspeed!` : `${liveKmh} km/h`;
+            if (badge.textContent !== nextTxt) badge.textContent = nextTxt;
+            badge.classList.toggle("overspeed", isOver);
+            badge.classList.toggle("selected", isSel);
+          });
+
+          // Update Overspeed banner + audio cue
+          if (tracked.isOverspeed) {
+            overspeedAlert.textContent = `Overspeed! ${tracked.who}: ${tracked.speed} km/h (Limit ${limit} km/h paar!)`;
+            overspeedAlert.classList.remove("hidden");
+          } else {
+            overspeedAlert.classList.add("hidden");
+          }
+          speedLimitChip.textContent = `Limit: ${limit} km/h`;
+
+          // Throttle heavier State Panel & Code line DOM syncs
+          const nowMs = performance.now();
+          if (!forceDomSync && nowMs - lastHudUpdateMs < 90) return;
+          lastHudUpdateMs = nowMs;
+
+          syncVehicleSliderPanel();
+
+          if (activeTab === "traffic") {
+            const speedText = tracked.isOverspeed
+              ? `${tracked.speed} km/h (Overspeed!)`
+              : `${tracked.speed} km/h`;
+            if (lastDisplayedStateSpeed !== speedText || lastDisplayedLimit !== limit) {
+              lastDisplayedStateSpeed = speedText;
+              lastDisplayedLimit = limit;
+              const speedValEl = stateGrid.querySelector('[data-state-key="speed"] .state-val');
+              if (speedValEl) speedValEl.textContent = speedText;
+              const limitValEl = stateGrid.querySelector('[data-state-key="limit"] .state-val');
+              if (limitValEl) limitValEl.textContent = `${limit} km/h`;
+            }
+
+            if (!isEditingCode) {
+              const spec = buildTrafficCodeSpec(trafficConfig);
+              const ifLimitIdx = spec.map.ifSpeedLimit;
+              const limitLineEl = codeBlock.querySelector(`[data-line-idx="${ifLimitIdx}"]`);
+              if (limitLineEl) {
+                const alreadyOver = limitLineEl.classList.contains("overspeed-active");
+                if (tracked.isOverspeed !== alreadyOver) {
+                  limitLineEl.classList.toggle("overspeed-active", tracked.isOverspeed);
+                  const existingTag = limitLineEl.querySelector(".code-overspeed-tag");
+                  if (tracked.isOverspeed && !existingTag && !limitLineEl.classList.contains("skipped-line")) {
+                    const tag = document.createElement("span");
+                    tag.className = "code-overspeed-tag";
+                    tag.textContent = "Overspeed!";
+                    limitLineEl.appendChild(tag);
+                  } else if (!tracked.isOverspeed && existingTag) {
+                    existingTag.remove();
+                  }
+                }
+              }
+            }
+          }
+        }
+
         function reset3DActors() {
           normalTrafficCars.forEach((car, idx) => {
             car.x = normalTrafficSpecs[idx].initX;
+            car.targetKmh = normalTrafficSpecs[idx].initKmh;
             car.speed = 0;
+            car.liveKmh = 0;
             car.group.position.set(car.x, 0, 2.3);
           });
           ambulanceX = -24;
+          ambulanceActor.targetKmh = 78;
+          ambulanceActor.speed = 0;
+          ambulanceActor.liveKmh = 0;
           ambulanceActor.group.position.set(ambulanceX, 0, -2.3);
           convoyX = -32;
+          convoyTargetKmh = 68;
+          convoySpeedUnits = 0;
+          convoyLiveKmh = 0;
           convoyGroup.position.set(convoyX, 0, -2.3);
+          selectedVehicleId = null;
+          lastDisplayedStateSpeed = null;
+          vehicleSpeedPanel.classList.add("hidden");
         }
 
         function cycleCameraAngle() {
@@ -3047,19 +3703,18 @@
           }
 
           // Determine Normal Traffic target behavior
-          // If CM Convoy is active, all normal traffic MUST stop behind the stop line!
           const forceStopForConvoy = trafficState.cmConvoy || trafficState.finished;
           let laneAllowed = true;
-          let maxCruise = 9.5;
+          let yellowCapKmh = 120;
           if (forceStopForConvoy || lamp === "Red") {
             laneAllowed = false;
-            maxCruise = 0;
+            yellowCapKmh = 0;
           } else if (lamp === "Yellow") {
             laneAllowed = true;
-            maxCruise = 3.2;
+            yellowCapKmh = 32;
           } else if (lamp === "none" && trafficState.stepCount === 0) {
             laneAllowed = false;
-            maxCruise = 0;
+            yellowCapKmh = 0;
           }
 
           // Update Normal Traffic Cars (ordered front-to-back along +X so queue never overlaps)
@@ -3070,23 +3725,21 @@
           for (let k = 0; k < sortedIndices.length; k++) {
             const c = normalTrafficCars[sortedIndices[k].idx];
             const ahead = k > 0 ? normalTrafficCars[sortedIndices[k - 1].idx] : null;
-            let desiredSpeed = laneAllowed ? maxCruise : 0;
+            const carMaxUnits = Math.min(c.targetKmh, yellowCapKmh) * KMH_TO_UNITS;
+            let desiredSpeed = laneAllowed ? carMaxUnits : 0;
 
-            // Stop smoothly before stop line when Red / Convoy / Finished
             const stopGoalX = STOP_LINE_X - 2.3;
             if (!laneAllowed && c.x <= stopGoalX + 0.6) {
               const distToStop = stopGoalX - c.x;
               if (distToStop <= 0.12) {
                 desiredSpeed = 0;
               } else {
-                desiredSpeed = Math.min(7.0, distToStop * 2.1);
+                desiredSpeed = Math.min(c.targetKmh * KMH_TO_UNITS, distToStop * 2.1);
               }
             } else if (!laneAllowed && c.x > stopGoalX + 0.6) {
-              // Cars already past stop line clear out of the intersection smoothly
-              desiredSpeed = 9.5;
+              desiredSpeed = Math.max(4.0, c.targetKmh * KMH_TO_UNITS);
             }
 
-            // Maintain safe spacing behind car ahead (unless ahead wrapped far behind)
             if (ahead && ahead.x > c.x) {
               const gap = ahead.x - c.x;
               if (gap < 6.2) {
@@ -3094,10 +3747,11 @@
               }
             }
 
-            c.speed = THREE.MathUtils.damp(c.speed, desiredSpeed, 4.5, delta);
+            c.speed = THREE.MathUtils.damp(c.speed, desiredSpeed, 4.8, delta);
+            if (c.speed < 0.04 && desiredSpeed === 0) c.speed = 0;
+            c.liveKmh = Math.min(120, Math.max(0, Math.round(c.speed / KMH_TO_UNITS)));
             c.x += c.speed * delta;
             if (c.x > 46) {
-              // Wrap behind the furthest-back car
               let minX = -32;
               normalTrafficCars.forEach((other) => {
                 if (other !== c && other.x < minX) minX = other.x;
@@ -3116,12 +3770,15 @@
           // Ambulance Kinematics (zooms through priority lane even on Red!)
           if (trafficState.ambulanceMode) {
             ambulanceActor.group.visible = true;
-            const ambSpeed = 16.5;
-            ambulanceX += ambSpeed * delta;
+            const targetAmbUnits = ambulanceActor.targetKmh * KMH_TO_UNITS;
+            ambulanceActor.speed = THREE.MathUtils.damp(ambulanceActor.speed, targetAmbUnits, 5.0, delta);
+            if (ambulanceActor.speed < 0.04 && targetAmbUnits === 0) ambulanceActor.speed = 0;
+            ambulanceActor.liveKmh = Math.min(120, Math.max(0, Math.round(ambulanceActor.speed / KMH_TO_UNITS)));
+            ambulanceX += ambulanceActor.speed * delta;
             if (ambulanceX > 44) ambulanceX = -34;
             ambulanceActor.group.position.x = ambulanceX;
             ambulanceActor.wheels.forEach((w) => {
-              w.rotation.z -= (ambSpeed * delta) / 0.38;
+              w.rotation.z -= (ambulanceActor.speed * delta) / 0.38;
             });
             const flash = Math.sin(elapsed * 16) > 0;
             ambulanceActor.sirenRedMat.emissiveIntensity = flash ? 3.5 : 0.15;
@@ -3132,13 +3789,18 @@
           } else {
             ambulanceActor.group.visible = false;
             ambulanceActor.sirenLight.intensity = 0;
+            ambulanceActor.speed = 0;
+            ambulanceActor.liveKmh = 0;
           }
 
           // CM Convoy Kinematics (Pilot Gaadi + Kaali SUV + Police Jeep)
           if (trafficState.cmConvoy) {
             convoyGroup.visible = true;
-            const convoySpeed = 11.5;
-            convoyX += convoySpeed * delta;
+            const targetConvoyUnits = convoyTargetKmh * KMH_TO_UNITS;
+            convoySpeedUnits = THREE.MathUtils.damp(convoySpeedUnits, targetConvoyUnits, 5.0, delta);
+            if (convoySpeedUnits < 0.04 && targetConvoyUnits === 0) convoySpeedUnits = 0;
+            convoyLiveKmh = Math.min(120, Math.max(0, Math.round(convoySpeedUnits / KMH_TO_UNITS)));
+            convoyX += convoySpeedUnits * delta;
             if (convoyX > 48) convoyX = -42;
             convoyGroup.position.x = convoyX;
             const flash = Math.sin(elapsed * 14) > 0;
@@ -3146,16 +3808,18 @@
               escort.sirenRedMat.emissiveIntensity = flash ? 3.2 : 0.2;
               escort.sirenBlueMat.emissiveIntensity = flash ? 0.2 : 3.2;
               escort.wheels.forEach((w) => {
-                w.rotation.z -= (convoySpeed * delta) / 0.38;
+                w.rotation.z -= (convoySpeedUnits * delta) / 0.38;
               });
             });
             vipSuv.wheels.forEach((w) => {
-              w.rotation.z -= (convoySpeed * delta) / 0.4;
+              w.rotation.z -= (convoySpeedUnits * delta) / 0.4;
             });
             vipSuv.headMat.emissiveIntensity = isNight ? 2.8 : 0.9;
             pilotCar.headMat.emissiveIntensity = isNight ? 2.4 : 0.5;
           } else {
             convoyGroup.visible = false;
+            convoySpeedUnits = 0;
+            convoyLiveKmh = 0;
           }
 
           // Camera Preset Smooth Damping (or dynamic VIP/Ambulance tracking)
@@ -3193,6 +3857,7 @@
           if (activeTab === "traffic") {
             update3DScene(delta, elapsed);
             threeRenderer.render(threeScene, threeCamera);
+            updateLiveSpeedHud(false);
           }
           if (isSoftwareGl) {
             afterDraw(tick3D);
@@ -3272,7 +3937,7 @@
                 trafficConfig.lights.length;
               st.light = trafficConfig.lights[safeIdx];
               st.activeLamp = st.light;
-              st.pc = trafficConfig.forLoopMode ? "ifNight" : "incI";
+              st.pc = trafficConfig.forLoopMode ? "ifSpeedLimit" : "incI";
               st.explanation = `lights[${trafficConfig.indexExpr}] = lights[${safeIdx}] -> "${st.light}" signal chuna gaya.`;
               if (!silent) playSignalSound(st.light);
               break;
@@ -3280,9 +3945,31 @@
 
             case "incI":
               st.i += trafficConfig.stepInc;
-              st.pc = "ifNight";
-              st.explanation = `Counter badh kar i = ${st.i} ho gaya.`;
+              st.pc = "ifSpeedLimit";
+              st.explanation = `Counter badh kar i = ${st.i} ho gaya. Ab gaadi ki speed limit check hogi.`;
               break;
+
+            case "ifSpeedLimit": {
+              const tracked = getTrackedHighwayInfo();
+              if (tracked.speed > trafficConfig.speedLimit) {
+                st.pc = "printOverspeed";
+                st.explanation = `Overspeed! ${tracked.who} ${tracked.speed} km/h par hai (limit ${trafficConfig.speedLimit} km/h paar!) — alert print hoga.`;
+              } else {
+                st.pc = "ifNight";
+                st.explanation = `Speed ${tracked.speed} km/h hai (limit ${trafficConfig.speedLimit} km/h ke andar) — safe! Ab Night Mode check hoga.`;
+              }
+              break;
+            }
+
+            case "printOverspeed": {
+              const tracked = getTrackedHighwayInfo();
+              printedText = `Overspeed! Alert: ${tracked.speed} km/h (${trafficConfig.speedLimit} km/h limit paar!)`;
+              st.outputs.push(printedText);
+              st.pc = "ifNight";
+              st.explanation = `Overspeed alert console mein print hua! Ab loop aage Night Mode aur signal rules check karega.`;
+              if (!silent) playOverspeedBeep();
+              break;
+            }
 
             case "ifNight":
               if (st.nightMode && st.light === trafficConfig.skipLight) {
@@ -3561,6 +4248,7 @@
                 : "Traffic: Start hone ka intezaar";
           }
 
+          const trackedSpeedInfo = getTrackedHighwayInfo();
           if (!isEditingCode) {
             const spec = buildTrafficCodeSpec(trafficConfig);
             const activeIdx = spec.map[trafficState.pc] ?? -1;
@@ -3574,8 +4262,15 @@
                 skipped.push(idx);
               }
             }
-            renderCodeLines(spec.lines, activeIdx, skipped);
+            const overspeedLineIdx = trackedSpeedInfo.isOverspeed ? spec.map.ifSpeedLimit : -1;
+            renderCodeLines(spec.lines, activeIdx, skipped, overspeedLineIdx);
           }
+
+          const stateSpeedStr = trackedSpeedInfo.isOverspeed
+            ? `${trackedSpeedInfo.speed} km/h (Overspeed!)`
+            : `${trackedSpeedInfo.speed} km/h`;
+          lastDisplayedStateSpeed = stateSpeedStr;
+          lastDisplayedLimit = trafficConfig.speedLimit;
 
           renderState([
             [
@@ -3585,6 +4280,8 @@
                 : trafficState.iteration,
             ],
             ["light", trafficState.light === "-" ? '"-"' : `"${trafficState.light}"`],
+            ["speed", stateSpeedStr],
+            ["limit", `${trafficConfig.speedLimit} km/h`],
             ["night_mode", trafficState.nightMode ? "True" : "False"],
             ["ambulance_aayi", trafficState.ambulanceMode ? "True" : "False"],
             ["cm_convoy", trafficState.cmConvoy ? "True" : "False"],
@@ -3598,6 +4295,7 @@
           btnNext.disabled = trafficState.finished;
           btnPlay.disabled = trafficState.finished;
           btnResetCode.classList.toggle("hidden", !trafficConfig.customEdited);
+          updateLiveSpeedHud(true);
         }
 
         // ============================================================
@@ -4161,8 +4859,8 @@
           if (activeTab === "traffic") {
             codeEditor.value = buildTrafficCodeSpec(trafficConfig).lines.join("\n");
             codeEditorHint.textContent = trafficConfig.forLoopMode
-              ? 'Tip: range(6), lights[i % 3] (jaise i % 2 ya (i + 1) % 3), ya "Yellow" badal kar dekho!'
-              : 'Tip: i = 0, lights[i % 3] (jaise i % 2 ya (i + 1) % 3), i = i + 1, ya "Yellow" badal kar dekho!';
+              ? 'Tip: limit = 80, range(6), lights[i % 3] (jaise i % 2), ya "Yellow" badal kar dekho!'
+              : 'Tip: limit = 80, i = 0, lights[i % 3] (jaise i % 2), i = i + 1, ya "Yellow" badal kar dekho!';
           } else {
             codeEditor.value = buildNumberCodeLines(numberState.mode, numberConfig).join("\n");
             codeEditorHint.textContent =
@@ -4193,6 +4891,7 @@
             let indexExpr = trafficConfig.indexExpr;
             let stepInc = trafficConfig.stepInc;
             let skipLight = trafficConfig.skipLight;
+            let speedLimit = trafficConfig.speedLimit;
             let forCount = trafficConfig.forCount;
             let lights = [...trafficConfig.lights];
 
@@ -4207,6 +4906,16 @@
                 );
                 return;
               }
+            }
+
+            const limitLine = lines.find((l) => /^\s*limit\s*=\s*\d+\s*$/.test(l));
+            if (limitLine) {
+              const limVal = parseInt(limitLine.match(/\d+/)[0], 10);
+              if (limVal < 10 || limVal > 120) {
+                showCodeEditError("limit = 10 se 120 km/h ke beech rakho (default 80).");
+                return;
+              }
+              speedLimit = limVal;
             }
 
             if (trafficConfig.forLoopMode) {
@@ -4227,7 +4936,7 @@
               if (iInitLine) {
                 initI = parseInt(iInitLine.match(/-?\d+/)[0], 10);
               } else {
-                showCodeEditError("Line 2 par 'i = 0' jaisa integer start hona chahiye.");
+                showCodeEditError("Line 3 par 'i = 0' jaisa integer start hona chahiye.");
                 return;
               }
 
@@ -4273,6 +4982,7 @@
               indexExpr,
               stepInc,
               skipLight,
+              speedLimit,
               forLoopMode: trafficConfig.forLoopMode,
               forCount,
               customEdited: true,
@@ -4347,6 +5057,7 @@
               indexExpr: DEFAULT_TRAFFIC_CONFIG.indexExpr,
               stepInc: DEFAULT_TRAFFIC_CONFIG.stepInc,
               skipLight: DEFAULT_TRAFFIC_CONFIG.skipLight,
+              speedLimit: DEFAULT_TRAFFIC_CONFIG.speedLimit,
               forLoopMode: trafficConfig.forLoopMode,
               forCount: DEFAULT_TRAFFIC_CONFIG.forCount,
               customEdited: false,
@@ -4584,6 +5295,32 @@
             if (isEditingCode) closeCodeEditor();
             resetNumbers();
           });
+        });
+
+        vehicleSpeedSlider.addEventListener("input", () => {
+          if (!selectedVehicleId) return;
+          const entry = vehicleMap.get(selectedVehicleId);
+          if (!entry) return;
+          const val = Math.max(0, Math.min(120, parseInt(vehicleSpeedSlider.value, 10) || 0));
+          entry.setTargetKmh(val);
+          selectedTargetSpeedEl.textContent = `${val} km/h`;
+          const isOver = val > trafficConfig.speedLimit;
+          sliderOverspeedTag.classList.toggle("hidden", !isOver);
+          vehicleSpeedPanel.classList.toggle("overspeed", isOver);
+          if (isOver) {
+            playOverspeedBeep();
+            trafficState.explanation = `${entry.name} ki target speed ${val} km/h set hui (limit ${trafficConfig.speedLimit} km/h se upar)! Chalte hi Overspeed! alert aur if speed > limit: line highlight hogi.`;
+          } else {
+            trafficState.explanation = `${entry.name} ki speed ${val} km/h set ho gayi (limit ${trafficConfig.speedLimit} km/h ke andar).`;
+          }
+          explanationText.textContent = trafficState.explanation;
+          updateLiveSpeedHud(true);
+        });
+
+        btnCloseSpeedPanel.addEventListener("click", () => {
+          selectedVehicleId = null;
+          vehicleSpeedPanel.classList.add("hidden");
+          updateLiveSpeedHud(true);
         });
 
         btnEditCode.addEventListener("click", () => {
